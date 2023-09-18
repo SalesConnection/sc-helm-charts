@@ -106,6 +106,8 @@ tolerations: []
 
 affinity: {}
 
+topologySpreadConstraints: {}
+
 notiServer:
   enabled: true
   replicaCount: 1
