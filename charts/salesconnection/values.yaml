@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 2
+revisionHistoryLimit: 5
 name: salesconnection #Don't change
 image:
   repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/main-sc-laravel
