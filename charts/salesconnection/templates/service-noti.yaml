@@ -1,0 +1,13 @@
+{{- if .Values.notiServer.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: noti-server
+spec:
+  {{- with .Values.notiServer.service.ports }}
+  ports:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    app: noti-server
+{{- end }}

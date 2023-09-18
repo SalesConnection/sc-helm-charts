@@ -1,0 +1,63 @@
+{{- if .Values.notiServer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noti-server-deployment
+  labels:
+    app: noti-server
+spec:
+  replicas: {{ .Values.notiServer.replicaCount }}
+  selector:
+    matchLabels:
+      app: noti-server
+  template:
+    metadata:
+      {{- with .Values.notiServer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: noti-server
+    spec:
+      {{- with .Values.notiServer.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.notiServer.podSecurityContext | nindent 8 }}
+      containers:
+        - name: noti-server
+          image: "{{ .Values.notiServer.image.repository }}:{{ .Values.notiServer.image.tag }}"
+          imagePullPolicy: {{ .Values.notiServer.image.pullPolicy }}
+          {{- with .Values.notiServer.image.ports }}
+          ports:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          {{- with .Values.notiServer.image.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

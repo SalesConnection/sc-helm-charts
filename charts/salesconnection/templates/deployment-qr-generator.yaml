@@ -1,0 +1,67 @@
+{{- if .Values.qrGenerator.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qr-generator-deployment
+  labels:
+    app: qr-generator
+spec:
+  replicas: {{ .Values.qrGenerator.replicaCount }}
+  selector:
+    matchLabels:
+      app: qr-generator
+  template:
+    metadata:
+      {{- with .Values.qrGenerator.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: qr-generator
+    spec:
+      {{- with .Values.qrGenerator.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.qrGenerator.podSecurityContext | nindent 8 }}
+      containers:
+        - name: qr-generator
+          image: "{{ .Values.qrGenerator.image.repository }}:{{ .Values.qrGenerator.image.tag }}"
+          imagePullPolicy: {{ .Values.qrGenerator.image.pullPolicy }}
+          {{- with .Values.qrGenerator.image.ports }}
+          ports:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          {{- with .Values.qrGenerator.image.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.qrGenerator.image.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

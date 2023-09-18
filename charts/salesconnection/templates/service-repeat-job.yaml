@@ -1,0 +1,13 @@
+{{- if .Values.repeatJob.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: repeat-job
+spec:
+  {{- with .Values.repeatJob.service.ports }}
+  ports:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    app: repeat-job
+{{- end }}

@@ -1,0 +1,59 @@
+{{- if .Values.repeatJob.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: repeat-job-deployment
+  labels:
+    app: repeat-job
+spec:
+  replicas: {{ .Values.repeatJob.replicaCount }}
+  selector:
+    matchLabels:
+      app: repeat-job
+  template:
+    metadata:
+      {{- with .Values.repeatJob.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: repeat-job
+    spec:
+      serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.repeatJob.podSecurityContext | nindent 8 }}
+      containers:
+        - name: repeat-job
+          image: "{{ .Values.repeatJob.image.repository }}:{{ .Values.repeatJob.image.tag }}"
+          imagePullPolicy: {{ .Values.repeatJob.image.pullPolicy }}
+          {{- with .Values.notiServer.image.ports }}
+          ports:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          {{- with .Values.repeatJob.image.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

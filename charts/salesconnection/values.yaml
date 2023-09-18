@@ -1,0 +1,221 @@
+# Default values for salesconnection.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+name: salesconnection #Don't change
+image:
+  repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/main-sc-laravel
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "92e93a3c9d8f2c3c5d626e8f155317543199c704"
+  envFrom:
+    - configMapRef:
+        name: laravel-env
+  env:
+    - name: DD_TRACE_AGENT_URL
+      value: 'unix:///var/run/datadog/apm.socket'
+    - name: DD_ENV
+      value: csr-staging
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: 
+    eks.amazonaws.com/role-arn: ""
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "sc-sa"
+podAnnotations:
+  "ad.datadoghq.com/salesconnection.logs": |
+    [
+      {"source":"container","service":"Laravel-log"}
+    ]      
+volumeMounts: 
+  - name: apmsocketpath
+    mountPath: /var/run/datadog
+volumes:
+  - name: apmsocketpath
+    hostPath:
+      path: /var/run/datadog/
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+host: example.com
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations: 
+    cert-manager.io/cluster-issuer: cert-manager-letsencrypt-production-route53
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+  hosts:
+    - host: example.com
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            port:
+              number: 80
+  tls: 
+  - hosts:
+    - example.com
+    secretName: example-tls
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+notiServer:
+  enabled: true
+  replicaCount: 1
+  image:
+    imagePullSecrets: []
+    repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/noti-server
+    tag: b0d09189bf7737c2a0f1d0cbc9c48c5ff2b3fe12
+    pullPolicy: Always
+    ports:
+    - containerPort: 8080
+  podAnnotations: {}
+  service:
+    enabled: true
+    port: 8080
+    ports:
+    - name: noti-server
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+
+repeatJob:
+  enabled: true
+  replicaCount: 1
+  image:
+    imagePullSecrets: []
+    repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/repeat-job
+    tag: latest
+    pullPolicy: Always
+    ports:
+      - containerPort: 8080
+  podAnnotations: {}
+  service:
+    enabled: true
+    port: 8080
+    ports:
+    - name: repeat-job
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+
+qrGenerator:
+  enabled: true
+  replicaCount: 1
+  image:
+    imagePullSecrets: []
+    repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/qr-generator
+    tag: 5308f4c2af6240c96440a26021f8b209d4ca462c
+    pullPolicy: Always
+    env:
+    - name: QUEUE_NAME
+      valueFrom:
+        configMapKeyRef:
+          name: qr-generator-cm
+          key: queue_name
+    - name: NODE_ENV
+      valueFrom:
+        configMapKeyRef:
+          name: qr-generator-cm
+          key: node_env
+  configMap:
+    queue_name: 'qr-generator-csr'
+    node_env: 'csr-staging'
+  podAnnotations: {}
+
+scConfigMap:
+  APP_KEY: ""
+  APP_DEBUG: "true"
+  LOG_CHANNEL: daily
+  LOG_DATADOG: "true"
+  STARROCKS_HOST: ""
+  STARROCKS_DATABASE: ""
+  STARROCKS_PORT: ""
+  STARROCKS_USERNAME: ""
+  STARROCKS_PASSWORD: ""
+  DB_HOST: ""
+  DB_HOST_READER: ""
+  DB_DATABASE: ""
+  DB_USERNAME: ""
+  DB_PASSWORD: ""
+  BROADCAST_DRIVER: log
+  CACHE_DRIVER: file
+  QUEUE_CONNECTION: sync
+  SESSION_DRIVER: file
+  SESSION_LIFETIME: "120"
+  S3_KEY: ""
+  S3_SECRET: ""
+  S3_REGION: singapore
+  S3_BUCKET: ""
+  AWS_ACCESS_KEY_ID: ""
+  AWS_SECRET_ACCESS_KEY: ""
+  AWS_DEFAULT_REGION: ap-southeast-1
+  AWS_BUCKET: salesconnection
+  AWS_URL: ""
+  AWS_SQS_EMAIL_QUEUE: ""
+  GOOGLE_APIKEY: ""
+  DISTANCE_CLASS: ""
+  QUEUE_EMAIL: "email:live"
+  ONESIGNAL_APPID: "ec8d0443-ecec-4334-8acd-cc20181e7c6b"
+  ONESIGNAL_TOKEN: ""
+  ONESIGNAL_CH_ALERT: "d4e3f92b-cfb3-48d0-ab36-ed48343eda78"
+  ONESIGNAL_CH_DEFAULT: "b8c67bd5-79f5-4c3c-ba63-9771efc23769"
+  ONESIGNAL_CH_ALARM: "316486f5-3f6c-4501-9e67-a4eca6135119"
+  AWS_SQS_ACCESS_KEY_ID: ""
+  AWS_SQS_SECRET_ACCESS_KEY: ""
+  REMINDER_QUEUE: "reminder-csr"
+  IMPORT_QUEUE: "import-csr"
+  EXPORT_QUEUE: "reminder-csr"
+  SQS_GENQR_QUEUE: "qr-generator-csr"
+  MONGODB_DSN: ""
+  MONGODB_DB: "contact"
+  APP_EVENT_BRIDGE_ENV: "csr"
+  QUEUE_USE_SEQNUM: "seqnum"
+  SQS_SEQNUM_QUEUE: "SCQueue-csr.fifo"
