@@ -12,6 +12,11 @@ spec:
   selector:
     matchLabels:
       {{- include "salesconnection.selectorLabels" . | nindent 6 }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       annotations:
