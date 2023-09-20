@@ -1,0 +1,9 @@
+{{- if .Values.scMessenger.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sc-messenger
+  labels:
+    name: sc-messenger
+data:
+  {{- toYaml .Values.scMessenger.configMap | nindent 2 }}

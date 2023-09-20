@@ -173,6 +173,43 @@ qrGenerator:
     node_env: 'csr-staging'
   podAnnotations: {}
 
+scMessenger:
+  enabled: false
+  replicaCount: 1
+  image:
+    imagePullSecrets: []
+    repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger
+    tag: v1.0.5-alpha.5
+    pullPolicy: Always
+  configMap:
+    APP_NAME: SC Messenger
+    APP_ENV: local
+    APP_KEY: 
+    APP_DEBUG: "true"
+    APP_URL: http://localhost
+    APP_TIMEZONE: UTC
+    APP_PORT: "8081"
+
+    LOG_CHANNEL: stack
+    LOG_SLACK_WEBHOOK_URL:
+
+    DB_CONNECTION: 
+    DB_HOST: 
+    DB_PORT: 
+    DB_DATABASE: 
+    DB_USERNAME: 
+    DB_PASSWORD: 
+
+    CACHE_DRIVER: file
+    QUEUE_CONNECTION: sqs
+
+    AWS_ACCESS_KEY_ID: 
+    AWS_SECRET_ACCESS_KEY: 
+    SQS_PREFIX: 
+    SQS_QUEUE: 
+    AWS_DEFAULT_REGION: 
+  podAnnotations: {}
+
 scConfigMap:
   APP_KEY: ""
   APP_DEBUG: "true"

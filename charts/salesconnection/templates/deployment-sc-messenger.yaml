@@ -1,0 +1,58 @@
+{{- if .Values.scMessenger.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sc-messenger-deployment
+  labels:
+    app: sc-messenger
+spec:
+  replicas: {{ .Values.scMessenger.replicaCount }}
+  selector:
+    matchLabels:
+      app: sc-messenger
+  template:
+    metadata:
+      annotations:
+        {{- toYaml .Values.scMessenger.podAnnotations | nindent 8 }}
+        configmap.reloader.stakater.com/reload: "sc-messenger"
+      labels:
+        app: sc-messenger
+    spec:
+      {{- with .Values.scMessenger.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.scMessenger.podSecurityContext | nindent 8 }}
+      containers:
+        - name: sc-messenger
+          image: "{{ .Values.scMessenger.image.repository }}:{{ .Values.scMessenger.image.tag }}"
+          imagePullPolicy: {{ .Values.scMessenger.image.pullPolicy }}
+          {{- with .Values.scMessenger.image.ports }}
+          ports:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.scMessenger.image.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.scMessenger.image.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
