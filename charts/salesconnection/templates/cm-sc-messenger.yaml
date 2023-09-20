@@ -7,3 +7,4 @@ metadata:
     name: sc-messenger
 data:
   {{- toYaml .Values.scMessenger.configMap | nindent 2 }}
+{{- end }}
