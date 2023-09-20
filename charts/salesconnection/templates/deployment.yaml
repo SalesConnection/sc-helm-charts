@@ -20,8 +20,10 @@ spec:
   template:
     metadata:
       annotations:
-        {{- toYaml .Values.podAnnotations | nindent 8 }}
         configmap.reloader.stakater.com/reload: "laravel-env"
+        {{- if .Values.podAnnotations }}
+          {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "salesconnection.selectorLabels" . | nindent 8 }}
     spec:

@@ -13,8 +13,10 @@ spec:
   template:
     metadata:
       annotations:
-        {{- toYaml .Values.scMessenger.podAnnotations | nindent 8 }}
         configmap.reloader.stakater.com/reload: "sc-messenger"
+        {{- if .Values.scMessenger.podAnnotations }}
+          {{- toYaml .Values.scMessenger.podAnnotations | nindent 8 }}
+        {{- end }}
       labels:
         app: sc-messenger
     spec:
