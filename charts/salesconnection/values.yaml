@@ -139,6 +139,9 @@ repeatJob:
     pullPolicy: Always
     ports:
       - containerPort: 8080
+    env:
+      - name: PORT
+        value: 8080
   podAnnotations: {}
   service:
     enabled: true

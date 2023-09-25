@@ -1,4 +1,5 @@
 {{- if .Values.repeatJob.enabled }}
+{{- $appHost  := .Values.host -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,10 +39,12 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
-          {{- with .Values.repeatJob.image.env }}
           env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            - name: URL
+              value: "https://{{ $appHost }}"
+            {{- if .Values.repeatJob.image.env }}
+              {{- toYaml .Values.repeatJob.image.env | nindent 12 }}
+            {{- end }}
           {{- with .Values.repeatJob.image.envFrom }}
           envFrom:
             {{- toYaml . | nindent 12 }}
