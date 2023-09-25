@@ -26,7 +26,7 @@ spec:
         - name: repeat-job
           image: "{{ .Values.repeatJob.image.repository }}:{{ .Values.repeatJob.image.tag }}"
           imagePullPolicy: {{ .Values.repeatJob.image.pullPolicy }}
-          {{- with .Values.notiServer.image.ports }}
+          {{- with .Values.repeatJob.image.ports }}
           ports:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -38,12 +38,16 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
+          {{- with .Values.repeatJob.image.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.repeatJob.image.envFrom }}
           envFrom:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.repeatJob.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
