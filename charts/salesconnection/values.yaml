@@ -182,7 +182,7 @@ scMessenger:
     tag: v1.0.5-alpha.5
     envFrom:
       - configMapRef:
-        name: sc-messenger
+          name: sc-messenger
     pullPolicy: Always
   configMap:
     APP_NAME: SC Messenger
