@@ -176,6 +176,10 @@ qrGenerator:
 scMessenger:
   enabled: false
   replicaCount: 1
+  serviceAccount:
+    annotations: 
+      eks.amazonaws.com/role-arn: ""
+    name: "sc-messenger-sa"
   image:
     imagePullSecrets: []
     repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger

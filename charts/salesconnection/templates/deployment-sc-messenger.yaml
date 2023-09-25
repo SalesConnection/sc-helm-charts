@@ -24,7 +24,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.scMessenger.serviceAccount.name }}
       securityContext:
         {{- toYaml .Values.scMessenger.podSecurityContext | nindent 8 }}
       containers:
