@@ -180,6 +180,9 @@ scMessenger:
     imagePullSecrets: []
     repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger
     tag: v1.0.5-alpha.5
+    envFrom:
+      - configMapRef:
+        name: sc-messenger
     pullPolicy: Always
   configMap:
     APP_NAME: SC Messenger
