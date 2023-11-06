@@ -48,6 +48,9 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+            - name: fpm
+              containerPort: 9000
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
@@ -70,6 +73,12 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        - name: php-fpm-prometheus-exporter
+          image: hipages/php-fpm_exporter:2
+          ports:
+            - name: http
+              containerPort: 9253
+              protocol: TCP
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
