@@ -10,5 +10,9 @@ spec:
       targetPort: {{ .Values.service.port }}
       protocol: TCP
       name: http
+    - port: 9253
+      targetPort: 9253
+      protocol: TCP
+      name: php-fpm-prometheus-exporter
   selector:
     {{- include "salesconnection.selectorLabels" . | nindent 4 }}
