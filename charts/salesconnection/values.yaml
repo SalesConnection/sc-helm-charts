@@ -36,18 +36,8 @@ podAnnotations:
     [
       {"source":"container","service":"Laravel-log"}
     ]      
-volumeMounts: 
-  - name: apmsocketpath
-    mountPath: /var/run/datadog
-  - name: sc-supervisor
-    mountPath: /etc/supervisor/conf.d/
+volumeMounts:
 volumes:
-  - name: sc-supervisor
-    configMap:
-      name: sc-supervisor
-  - name: apmsocketpath
-    hostPath:
-      path: /var/run/datadog/
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -113,6 +103,9 @@ tolerations: []
 affinity: {}
 
 topologySpreadConstraints: {}
+
+datadog:
+  enabled: true
 
 queueworker:
   enabled: true

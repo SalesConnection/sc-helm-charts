@@ -34,8 +34,16 @@ spec:
       serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- with .Values.volumes }}
       volumes:
+        - name: sc-supervisor
+          configMap:
+            name: sc-supervisor
+      {{- if .Values.datadog.enabled }}
+        - name: apmsocketpath
+          hostPath:
+            path: /var/run/datadog/
+      {{- end }}
+      {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
@@ -59,8 +67,14 @@ spec:
             httpGet:
               path: /
               port: http
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: sc-supervisor
+              mountPath: /etc/supervisor/conf.d/
+          {{- if .Values.datadog.enabled }}
+            - name: apmsocketpath
+              mountPath: /var/run/datadog
+          {{- end }}
+          {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.image.envFrom }}
