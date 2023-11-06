@@ -39,7 +39,12 @@ podAnnotations:
 volumeMounts: 
   - name: apmsocketpath
     mountPath: /var/run/datadog
+  - name: sc-supervisor
+    mountPath: /etc/supervisor/conf.d/
 volumes:
+  - name: sc-supervisor
+    configMap:
+      name: sc-supervisor
   - name: apmsocketpath
     hostPath:
       path: /var/run/datadog/
@@ -108,6 +113,21 @@ tolerations: []
 affinity: {}
 
 topologySpreadConstraints: {}
+
+queueworker:
+  enabled: true
+  reminderWorker:
+    enabled: true
+    count: 5
+  importWorker:
+    enabled: true
+    count: 2
+  exportWorker:
+    enabled: true
+    count: 2
+  seqNumWorker:
+    enabled: true
+    count: 2
 
 notiServer:
   enabled: true
