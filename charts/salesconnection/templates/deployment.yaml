@@ -90,7 +90,7 @@ spec:
         - name: php-fpm-prometheus-exporter
           image: hipages/php-fpm_exporter:2
           ports:
-            - name: http
+            - name: metrics
               containerPort: 9253
               protocol: TCP
       {{- with .Values.nodeSelector }}
