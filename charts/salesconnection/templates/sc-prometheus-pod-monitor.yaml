@@ -8,3 +8,6 @@ spec:
       {{- include "salesconnection.selectorLabels" . | nindent 6 }}
   podMetricsEndpoints:
   - port: metrics
+  namespaceSelector:
+    matchNames:
+      - salesconnection
