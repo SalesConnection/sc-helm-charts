@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: supervisor-entrypoint
+  labels:
+    name: supervisor-entrypoint
+data:
+  entrypoint.sh: |-
+  {{- if .Values.queueworker.enabled }}
+    #!/bin/sh
+    supervisord
+  {{- end }}

@@ -7,6 +7,9 @@ metadata:
 data:
   laravel-worker.conf: |-
   {{- if .Values.queueworker.enabled }}
+    [supervisord]
+    nodaemon=true
+    
     {{- if .Values.queueworker.reminderWorker.enabled }}
     [program:laravel-worker]
     process_name=%(program_name)s_%(process_num)02d

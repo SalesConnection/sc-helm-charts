@@ -20,7 +20,7 @@ spec:
   template:
     metadata:
       annotations:
-        configmap.reloader.stakater.com/reload: "laravel-env,sc-supervisor"
+        configmap.reloader.stakater.com/reload: "laravel-env"
         {{- if .Values.podAnnotations }}
           {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
@@ -35,9 +35,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: sc-supervisor
-          configMap:
-            name: sc-supervisor
       {{- if .Values.datadog.enabled }}
         - name: apmsocketpath
           hostPath:
@@ -68,8 +65,6 @@ spec:
               path: /
               port: http
           volumeMounts:
-            - name: sc-supervisor
-              mountPath: /etc/supervisor/conf.d/
           {{- if .Values.datadog.enabled }}
             - name: apmsocketpath
               mountPath: /var/run/datadog
