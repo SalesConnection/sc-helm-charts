@@ -199,7 +199,7 @@ scMessenger:
   image:
     imagePullSecrets: []
     repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger
-    tag: v1.0.5-alpha.5
+    tag: v1.1.0-alpha.1
     envFrom:
       - configMapRef:
           name: sc-messenger
