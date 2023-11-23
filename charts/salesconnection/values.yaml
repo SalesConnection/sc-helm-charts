@@ -235,6 +235,8 @@ scMessenger:
   service:
     type: ClusterIP
     port: 80
+  datadog:
+    enabled: false
   host: example.com
   ingress:
     enabled: true

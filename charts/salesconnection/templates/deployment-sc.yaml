@@ -76,8 +76,10 @@ spec:
           envFrom:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.image.env }}
           env:
+            - name: DD_TRACE_AGENT_URL
+              value: 'unix:///var/run/datadog/apm.socket'
+          {{- with .Values.image.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           resources:

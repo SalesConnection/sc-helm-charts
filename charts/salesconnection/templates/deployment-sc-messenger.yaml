@@ -27,6 +27,12 @@ spec:
       serviceAccountName: {{ .Values.scMessenger.serviceAccount.name }}
       securityContext:
         {{- toYaml .Values.scMessenger.podSecurityContext | nindent 8 }}
+      volumes:
+      {{- if .Values.scMessenger.datadog.enabled }}
+        - name: apmsocketpath
+          hostPath:
+            path: /var/run/datadog/
+      {{- end }}
       containers:
         - name: sc-messenger
           image: "{{ .Values.scMessenger.image.repository }}:{{ .Values.scMessenger.image.tag }}"
@@ -35,8 +41,10 @@ spec:
           ports:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.scMessenger.image.env }}
           env:
+            - name: DD_TRACE_AGENT_URL
+              value: 'unix:///var/run/datadog/apm.socket'
+          {{- with .Values.scMessenger.image.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.scMessenger.image.envFrom }}
@@ -45,6 +53,11 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.scMessenger.resources | nindent 12 }}
+          volumeMounts:
+          {{- if .Values.scMessenger.datadog.enabled }}
+            - name: apmsocketpath
+              mountPath: /var/run/datadog
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
