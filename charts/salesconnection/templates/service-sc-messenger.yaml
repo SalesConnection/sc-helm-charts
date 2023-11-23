@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sc-messenger
+  labels:
+    app: sc-messenger
+spec:
+  ports:
+    - port: {{ .Values.scMessenger.service.port }}
+      targetPort: {{ .Values.scMessenger.service.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: sc-messenger

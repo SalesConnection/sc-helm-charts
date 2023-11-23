@@ -190,7 +190,7 @@ qrGenerator:
   podAnnotations: {}
 
 scMessenger:
-  enabled: false
+  enabled: true
   replicaCount: 1
   serviceAccount:
     annotations: 
@@ -232,6 +232,31 @@ scMessenger:
     SQS_QUEUE: ""
     AWS_DEFAULT_REGION: ""
   podAnnotations: {}
+  service:
+    type: ClusterIP
+    port: 80
+  host: example.com
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: cert-manager-letsencrypt-production-route53
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      nginx.ingress.kubernetes.io/proxy-body-size: 5m
+    hosts:
+      - host: example.com
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              port:
+                number: 80
+    tls:
+    - hosts:
+      - example.com
+      secretName: example-tls
 
 scConfigMap:
   APP_KEY: ""
