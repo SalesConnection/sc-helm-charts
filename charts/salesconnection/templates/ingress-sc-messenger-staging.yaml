@@ -1,0 +1,59 @@
+{{- if .Values.scMessengerStaging.ingress.enabled -}}
+{{- if and .Values.scMessengerStaging.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.scMessengerStaging.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.scMessengerStaging.ingress.annotations "kubernetes.io/ingress.class" .Values.scMessengerStaging.ingress.className}}
+  {{- end }}
+{{- end }}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: sc-messenger-staging-ingress
+  labels:
+    app: sc-messenger-staging
+  {{- with .Values.scMessengerStaging.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if and .Values.scMessengerStaging.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.scMessengerStaging.ingress.className }}
+  {{- end }}
+  {{- if .Values.scMessengerStaging.ingress.tls }}
+  tls:
+    {{- range .Values.scMessengerStaging.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.scMessengerStaging.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: sc-messenger-staging
+                port:
+                  number: 80
+              {{- else }}
+              serviceName: sc-messenger-staging
+              servicePort: 80
+              {{- end }}
+          {{- end }}
+    {{- end }}
+{{- end }}

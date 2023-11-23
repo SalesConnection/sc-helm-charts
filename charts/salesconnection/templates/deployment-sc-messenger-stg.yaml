@@ -1,60 +1,60 @@
-{{- if .Values.scMessenger.enabled }}
+{{- if .Values.scMessengerStaging.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sc-messenger-deployment
+  name: sc-messenger-staging-deployment
   labels:
-    app: sc-messenger
+    app: sc-messenger-staging
 spec:
-  replicas: {{ .Values.scMessenger.replicaCount }}
+  replicas: {{ .Values.scMessengerStaging.replicaCount }}
   selector:
     matchLabels:
-      app: sc-messenger
+      app: sc-messenger-staging
   template:
     metadata:
       annotations:
-        configmap.reloader.stakater.com/reload: "sc-messenger"
-        {{- if .Values.scMessenger.podAnnotations }}
-          {{- toYaml .Values.scMessenger.podAnnotations | nindent 8 }}
+        configmap.reloader.stakater.com/reload: "sc-messenger-staging"
+        {{- if .Values.scMessengerStaging.podAnnotations }}
+          {{- toYaml .Values.scMessengerStaging.podAnnotations | nindent 8 }}
         {{- end }}
       labels:
-        app: sc-messenger
+        app: sc-messenger-staging
     spec:
-      {{- with .Values.scMessenger.image.imagePullSecrets }}
+      {{- with .Values.scMessengerStaging.image.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ .Values.scMessenger.serviceAccount.name }}
       securityContext:
-        {{- toYaml .Values.scMessenger.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.scMessengerStaging.podSecurityContext | nindent 8 }}
       volumes:
-      {{- if .Values.scMessenger.datadog.enabled }}
+      {{- if .Values.scMessengerStaging.datadog.enabled }}
         - name: apmsocketpath
           hostPath:
             path: /var/run/datadog/
       {{- end }}
       containers:
-        - name: sc-messenger
-          image: "{{ .Values.scMessenger.image.repository }}:{{ .Values.scMessenger.image.tag }}"
-          imagePullPolicy: {{ .Values.scMessenger.image.pullPolicy }}
-          {{- with .Values.scMessenger.image.ports }}
+        - name: sc-messenger-staging
+          image: "{{ .Values.scMessengerStaging.image.repository }}:{{ .Values.scMessengerStaging.image.tag }}"
+          imagePullPolicy: {{ .Values.scMessengerStaging.image.pullPolicy }}
+          {{- with .Values.scMessengerStaging.image.ports }}
           ports:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
             - name: DD_TRACE_AGENT_URL
               value: 'unix:///var/run/datadog/apm.socket'
-          {{- with .Values.scMessenger.image.env }}
+          {{- with .Values.scMessengerStaging.image.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.scMessenger.image.envFrom }}
+          {{- with .Values.scMessengerStaging.image.envFrom }}
           envFrom:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           resources:
-            {{- toYaml .Values.scMessenger.resources | nindent 12 }}
+            {{- toYaml .Values.scMessengerStaging.resources | nindent 12 }}
           volumeMounts:
-          {{- if .Values.scMessenger.datadog.enabled }}
+          {{- if .Values.scMessengerStaging.datadog.enabled }}
             - name: apmsocketpath
               mountPath: /var/run/datadog
           {{- end }}
@@ -66,8 +66,8 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.scMessenger.topologySpreadConstraints}}
-      {{- with .Values.scMessenger.topologySpreadConstraints }}
+      {{- if .Values.scMessengerStaging.topologySpreadConstraints}}
+      {{- with .Values.scMessengerStaging.topologySpreadConstraints }}
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -78,7 +78,7 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              app: sc-messenger
+              app: sc-messenger-staging
           matchLabelKeys:
             - pod-template-hash
       {{- end }}

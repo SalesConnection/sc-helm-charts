@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sc-messenger-staging
+  labels:
+    app: sc-messenger-staging
+spec:
+  ports:
+    - port: {{ .Values.scMessengerStaging.service.port }}
+      targetPort: {{ .Values.scMessengerStaging.service.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: sc-messenger-staging
