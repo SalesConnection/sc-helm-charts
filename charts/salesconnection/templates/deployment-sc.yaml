@@ -56,9 +56,6 @@ spec:
             - name: fpm
               containerPort: 9000
               protocol: TCP
-            - name: supervisor
-              containerPort: 9001
-              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
@@ -90,14 +87,8 @@ spec:
         - name: php-fpm-prometheus-exporter
           image: hipages/php-fpm_exporter:2
           ports:
-            - name: metrics-fpm
+            - name: metrics
               containerPort: 9253
-              protocol: TCP
-        - name: supervisor-prometheus-exporter
-          image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/supervisor-prometheus-exporter:latest
-          ports:
-            - name: metrics-supervisor
-              containerPort: 9876
               protocol: TCP
       {{- with .Values.nodeSelector }}
       nodeSelector:

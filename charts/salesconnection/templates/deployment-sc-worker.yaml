@@ -78,6 +78,16 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          ports:
+            - name: supervisor
+              containerPort: 9001
+              protocol: TCP
+        - name: supervisor-prometheus-exporter
+          image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/supervisor-prometheus-exporter:latest
+          ports:
+            - name: metrics
+              containerPort: 9876
+              protocol: TCP
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -5,9 +5,9 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "salesconnection.selectorLabels" . | nindent 6 }}
+      app: sc-worker
   podMetricsEndpoints:
-    - port: metrics-supervisor
+    - port: metrics
       interval: 2s
       scrapeTimeout: 1s
   namespaceSelector:
