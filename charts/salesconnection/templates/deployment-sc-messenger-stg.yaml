@@ -37,8 +37,11 @@ spec:
         - name: sc-messenger-staging
           image: "{{ .Values.scMessengerStaging.image.repository }}:{{ .Values.scMessengerStaging.image.tag }}"
           imagePullPolicy: {{ .Values.scMessengerStaging.image.pullPolicy }}
-          {{- with .Values.scMessengerStaging.image.ports }}
           ports:
+            - name: supervisor
+              containerPort: 9001
+              protocol: TCP
+          {{- with .Values.scMessengerStaging.image.ports }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
@@ -58,6 +61,12 @@ spec:
             - name: apmsocketpath
               mountPath: /var/run/datadog
           {{- end }}
+        - name: supervisor-prometheus-exporter
+          image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/supervisor-prometheus-exporter:latest
+          ports:
+            - name: metrics
+              containerPort: 9876
+              protocol: TCP
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

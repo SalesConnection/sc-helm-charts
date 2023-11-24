@@ -8,8 +8,8 @@ spec:
       {{- include "salesconnection.selectorLabels" . | nindent 6 }}
   podMetricsEndpoints:
     - port: metrics
-      interval: 2s
-      scrapeTimeout: 1s
+      interval: 5s
+      scrapeTimeout: 4s
   namespaceSelector:
     matchNames:
       - salesconnection

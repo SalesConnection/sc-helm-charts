@@ -5,70 +5,28 @@ metadata:
   labels:
     name: sc-supervisor
 data:
-  laravel-worker.conf: |-
   {{- if .Values.queueworker.enabled }}
+  {{- range .Values.queueworker.queues }}
+  {{- if and .enabled (or .queue_env_key .sqs_queue_name) }}
+  {{ .name }}.conf: |-
     [supervisord]
     nodaemon=true
 
     [inet_http_server]
     port = 127.0.0.1:9001
-    
-    {{- if .Values.queueworker.reminderWorker.enabled }}
-    [program:laravel-worker]
+    {{ printf "" }}
+    [program:{{ .name }}]
     process_name=%(program_name)s_%(process_num)02d
-    environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE="laravel-worker"
-    command=/usr/local/bin/php /var/www/artisan queue:work sqs --queue=%(ENV_REMINDER_QUEUE)s
+    environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE={{ .name | quote }}
+    command=/usr/local/bin/php /var/www/artisan queue:work sqs --queue={{- if .queue_env_key }}%(ENV_{{ .queue_env_key }})s{{- else }}{{ .sqs_queue_name }}{{- end }}
     autostart=true
     autorestart=true
     user=root
-    numprocs={{ .Values.queueworker.reminderWorker.count }}
+    numprocs= {{ .count | default 1 }}
     redirect_stderr=true
     stdout_logfile=/dev/fd/1
     stdout_logfile_maxbytes=0
-    {{- end }}
-
-    {{- if .Values.queueworker.importWorker.enabled }}
-
-    [program:laravel-import]
-    process_name=%(program_name)s_%(process_num)02d
-    environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE="laravel-import"
-    command=/usr/local/bin/php /var/www/artisan queue:work sqs --queue=%(ENV_IMPORT_QUEUE)s --timeout=300
-    autostart=true
-    autorestart=true
-    user=root
-    numprocs={{ .Values.queueworker.importWorker.count }}
-    redirect_stderr=true
-    stdout_logfile=/dev/fd/1
-    stdout_logfile_maxbytes=0
-    {{- end }}
-
-    {{- if .Values.queueworker.exportWorker.enabled }}
-
-    [program:laravel-export]
-    process_name=%(program_name)s_%(process_num)02d
-    environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE="laravel-export"
-    command=/usr/local/bin/php /var/www/artisan queue:work sqs --queue=%(ENV_EXPORT_QUEUE)s --timeout=300
-    autostart=true
-    autorestart=true
-    user=root
-    numprocs={{ .Values.queueworker.exportWorker.count }}
-    redirect_stderr=true
-    stdout_logfile=/dev/fd/1
-    stdout_logfile_maxbytes=0
-    {{- end }}
-
-    {{- if .Values.queueworker.seqNumWorker.enabled }}
-
-    [program:laravel-seqnum]
-    process_name=%(program_name)s_%(process_num)02d
-    environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE="laravel-seqnum"
-    command=/usr/local/bin/php /var/www/artisan queue:work sqs --queue=%(ENV_SQS_SEQNUM_QUEUE)s --timeout=300
-    autostart=true
-    autorestart=true
-    user=root
-    numprocs={{ .Values.queueworker.seqNumWorker.count }}
-    redirect_stderr=true
-    stdout_logfile=/dev/fd/1
-    stdout_logfile_maxbytes=0
-    {{- end }}
+    {{ printf "" }}
+  {{- end }}
+  {{- end }}
   {{- end }}

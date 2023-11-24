@@ -1,15 +1,60 @@
+{{- if .Values.queueworker.enabled }}
+{{- range .Values.queueworker.queues }}
+{{- if and .enabled (or .queue_env_key .sqs_queue_name) }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: sc-pod-monitor-supervisor-prometheus-crd
+  name: {{ .name }}
 spec:
   selector:
     matchLabels:
-      app: sc-worker
+      app: {{ .name }}
   podMetricsEndpoints:
     - port: metrics
-      interval: 2s
-      scrapeTimeout: 1s
+      interval: 5s
+      scrapeTimeout: 4s
   namespaceSelector:
     matchNames:
       - salesconnection
+---
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.scMessenger.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: sc-messenger
+spec:
+  selector:
+    matchLabels:
+      app: sc-messenger
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      scrapeTimeout: 4s
+  namespaceSelector:
+    matchNames:
+      - salesconnection
+---
+{{- end }}
+
+{{- if .Values.scMessengerStaging.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: sc-messenger-staging
+spec:
+  selector:
+    matchLabels:
+      app: sc-messenger-staging
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      scrapeTimeout: 4s
+  namespaceSelector:
+    matchNames:
+      - salesconnection
+---
+{{- end }}
