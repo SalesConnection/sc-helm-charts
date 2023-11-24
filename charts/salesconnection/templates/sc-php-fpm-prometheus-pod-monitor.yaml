@@ -7,7 +7,7 @@ spec:
     matchLabels:
       {{- include "salesconnection.selectorLabels" . | nindent 6 }}
   podMetricsEndpoints:
-    - port: metrics-fpm
+    - port: metrics
       interval: 2s
       scrapeTimeout: 1s
   namespaceSelector:
