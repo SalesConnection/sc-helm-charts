@@ -9,6 +9,9 @@ data:
   {{- if .Values.queueworker.enabled }}
     [supervisord]
     nodaemon=true
+
+    [inet_http_server]
+    port = 127.0.0.1:9001
     
     {{- if .Values.queueworker.reminderWorker.enabled }}
     [program:laravel-worker]

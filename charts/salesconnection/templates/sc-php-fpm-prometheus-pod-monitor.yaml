@@ -1,13 +1,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: sc-pod-monitor-prometheus-crd
+  name: sc-pod-monitor-php-fpm-prometheus-crd
 spec:
   selector:
     matchLabels:
       {{- include "salesconnection.selectorLabels" . | nindent 6 }}
   podMetricsEndpoints:
-    - port: metrics
+    - port: metrics-fpm
       interval: 2s
       scrapeTimeout: 1s
   namespaceSelector:

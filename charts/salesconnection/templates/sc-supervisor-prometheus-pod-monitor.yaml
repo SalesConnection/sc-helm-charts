@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: sc-pod-monitor-supervisor-prometheus-crd
+spec:
+  selector:
+    matchLabels:
+      {{- include "salesconnection.selectorLabels" . | nindent 6 }}
+  podMetricsEndpoints:
+    - port: metrics-supervisor
+      interval: 2s
+      scrapeTimeout: 1s
+  namespaceSelector:
+    matchNames:
+      - salesconnection

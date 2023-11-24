@@ -14,5 +14,9 @@ spec:
       targetPort: 9253
       protocol: TCP
       name: php-fpm-prometheus-exporter
+    - port: 9876
+      targetPort: 9876
+      protocol: TCP
+      name: supervisor-prometheus-exporter
   selector:
     {{- include "salesconnection.selectorLabels" . | nindent 4 }}
