@@ -42,8 +42,12 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
-          {{- with .Values.notiServer.image.env }}
           env:
+          - name: URL
+            value: "https://{{ $appHost }}"
+          - name: PORT
+            value: "8080"
+          {{- with .Values.notiServer.image.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.notiServer.image.envFrom }}

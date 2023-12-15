@@ -32,10 +32,6 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: "sc-sa"
 podAnnotations:
-  "ad.datadoghq.com/salesconnection.logs": |
-    [
-      {"source":"container","service":"Laravel-log"}
-    ]      
 volumeMounts:
 volumes:
 
