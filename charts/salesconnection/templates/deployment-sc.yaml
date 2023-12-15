@@ -21,7 +21,7 @@ spec:
     metadata:
       annotations:
         configmap.reloader.stakater.com/reload: "laravel-env"
-        ad.datadoghq.com/{{ .Chart.Name }}}.logs: |
+        ad.datadoghq.com/{{ .Chart.Name }}.logs: |
           [
             {"source":"container","service":"Laravel-log"}
           ]      
