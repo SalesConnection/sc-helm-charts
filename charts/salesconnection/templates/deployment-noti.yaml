@@ -1,4 +1,5 @@
 {{- if .Values.notiServer.enabled }}
+{{- $appHost  := .Values.host -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
