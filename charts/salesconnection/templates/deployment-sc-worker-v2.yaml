@@ -91,7 +91,7 @@ spec:
             - name: metrics
               containerPort: 9876
               protocol: TCP
-      {{- with $.Values.nodeSelector }}
+      {{- with $.Values.queueworker.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -108,7 +108,7 @@ spec:
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: "topology.kubernetes.io/zone"
-          whenUnsatisfiable: DoNotSchedule
+          whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
               app: {{ .name }}

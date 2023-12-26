@@ -20,7 +20,6 @@ data:
   AWS_BUCKET_TMP: salesconnection-temp-files
   DATADOG_LOG: php://stdout
   IMG_UPLOAD_PATH: /var/www/uploads
-  datadog.env: csr
   # Email what use for idk
   MAIL_MAILER: smtp
   MAIL_HOST: smtp.mailtrap.io

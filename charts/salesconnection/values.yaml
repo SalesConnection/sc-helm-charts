@@ -127,6 +127,8 @@ queueworker:
       replica: 2
       count: 5
       queue_env_key: SQS_SEQNUM_QUEUE
+  nodeSelector:
+    queue-worker: owned
   reminderWorker:
     enabled: false
     count: 5
