@@ -18,7 +18,7 @@ data:
     [program:{{ .name }}]
     process_name=%(program_name)s_%(process_num)02d
     environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE={{ .name | quote }}
-    command=/usr/local/bin/php /var/www/artisan queue:work sqs --queue={{- if .queue_env_key }}%(ENV_{{ .queue_env_key }})s{{- else }}{{ .sqs_queue_name }}{{- end }}
+    command=/usr/local/bin/php /var/www/artisan queue:work {{ if .name }}{{ .name }}{{ else }}{{ "sqs" }}{{ end }} --queue={{- if .queue_env_key }}%(ENV_{{ .queue_env_key }})s{{- else }}{{ .sqs_queue_name }}{{- end }}
     autostart=true
     autorestart=true
     user=root
