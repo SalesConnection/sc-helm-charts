@@ -114,7 +114,7 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              {{- include "salesconnection.selectorLabels" . | nindent 10 }}
+              {{- include "salesconnection.selectorLabels" . | nindent 14 }}
           matchLabelKeys:
             - pod-template-hash
       {{- end }}
