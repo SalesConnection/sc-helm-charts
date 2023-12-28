@@ -106,27 +106,38 @@ datadog:
 queueworker:
   enabled: true
   queues:
+    - name: checkin-worker
+      enabled: false
+      replica: 1
+      count: 5
+      queue_env_key: CHECKIN_QUEUE
+    - name: import-worker
+      enabled: true
+      replica: 1
+      count: 3
+      queue_env_key: IMPORT_QUEUE
+      timeout: 300
     - name: reminder-worker
       enabled: false
       replica: 1
-      count: 20
-      queue_env_key: REMINDER_QUEUE
-      sqs_queue_name: reminder-live
-    - name: import-worker
-      enabled: false
-      replica: 1
       count: 5
-      queue_env_key: IMPORT_QUEUE
-    - name: export-worker
-      enabled: false
-      replica: 1
-      count: 5
-      queue_env_key: EXPORT_QUEUE
-    - name: laravel-seqNum
+      connection: reminder
+    - name: laravel-seqnum
       enabled: true
       replica: 2
       count: 5
-      queue_env_key: SQS_SEQNUM_QUEUE
+      connection: seqnum
+    - name: laravel-worker
+      enabled: true
+      replica: 1
+      count: 5
+      queue_env_key: REMINDER_QUEUE
+    - name: export-worker
+      enabled: false
+      replica: 1
+      count: 3
+      queue_env_key: EXPORT_QUEUE
+      timeout: 300
   nodeSelector:
     queue-worker: owned
   reminderWorker:

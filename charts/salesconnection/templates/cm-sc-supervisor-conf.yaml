@@ -7,7 +7,7 @@ metadata:
 data:
   {{- if .Values.queueworker.enabled }}
   {{- range .Values.queueworker.queues }}
-  {{- if and .enabled (or .queue_env_key .sqs_queue_name) }}
+  {{- if and .enabled (or .queue_env_key .sqs_queue_name .connection) }}
   {{ .name }}.conf: |-
     [supervisord]
     nodaemon=true
@@ -18,11 +18,11 @@ data:
     [program:{{ .name }}]
     process_name=%(program_name)s_%(process_num)02d
     environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE={{ .name | quote }}
-    command=/usr/local/bin/php /var/www/artisan queue:work {{ if .connection }}{{ .connection }}{{ else }}{{ "sqs" }}{{ end }} --queue={{- if .queue_env_key }}%(ENV_{{ .queue_env_key }})s{{- else }}{{ .sqs_queue_name }}{{- end }}
+    command=/usr/local/bin/php /var/www/artisan queue:work {{ if .connection }}{{ .connection }}{{ else }}{{ "sqs" }}{{ end }} {{ if .queue_env_key }}--queue=%(ENV_{{ .queue_env_key }})s{{ else if .sqs_queue_name }}--queue={{ .sqs_queue_name }}{{ end }} {{ if .timeout }}--timeout={{ .timeout }}{{ end }}
     autostart=true
     autorestart=true
     user=root
-    numprocs= {{ .count | default 1 }}
+    numprocs={{ .count | default 1 }}
     redirect_stderr=true
     stdout_logfile=/dev/fd/1
     stdout_logfile_maxbytes=0
