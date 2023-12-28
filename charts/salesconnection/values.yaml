@@ -112,7 +112,7 @@ queueworker:
       count: 5
       queue_env_key: CHECKIN_QUEUE
     - name: import-worker
-      enabled: true
+      enabled: false
       replica: 1
       count: 3
       queue_env_key: IMPORT_QUEUE
@@ -123,12 +123,12 @@ queueworker:
       count: 5
       connection: reminder
     - name: laravel-seqnum
-      enabled: true
+      enabled: false
       replica: 2
       count: 5
       connection: seqnum
     - name: laravel-worker
-      enabled: true
+      enabled: false
       replica: 1
       count: 5
       queue_env_key: REMINDER_QUEUE
