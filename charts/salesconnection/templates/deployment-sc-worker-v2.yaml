@@ -1,6 +1,6 @@
 {{- if .Values.queueworker.enabled }}
 {{- range .Values.queueworker.queues }}
-{{- if and .enabled (or .queue_env_key .sqs_queue_name) }}
+{{- if and .enabled (or .queue_env_key .sqs_queue_name .connection) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
