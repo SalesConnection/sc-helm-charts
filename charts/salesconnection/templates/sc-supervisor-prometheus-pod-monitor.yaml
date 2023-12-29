@@ -15,7 +15,7 @@ spec:
       scrapeTimeout: 4s
   namespaceSelector:
     matchNames:
-      - {{ .Release.Namespace }}
+      - {{ $.Release.Namespace }}
 ---
 {{- end }}
 {{- end }}
