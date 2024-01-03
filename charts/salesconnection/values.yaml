@@ -54,11 +54,7 @@ host: example.com
 ingress:
   enabled: false
   className: "nginx"
-  annotations: 
-    cert-manager.io/cluster-issuer: cert-manager-letsencrypt-production-route53
-    kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+  annotations: {}
   hosts:
     - host: example.com
       paths:
