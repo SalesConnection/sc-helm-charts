@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reminder-cron
+  labels:
+    {{- include "salesconnection.labels" . | nindent 4 }}
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
+          volumes:
+          {{- if .Values.datadog.enabled }}
+            - name: apmsocketpath
+              hostPath:
+                path: /var/run/datadog/
+          {{- end }}
+          {{- with .Values.volumes }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: reminderJob
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - /usr/local/bin/php /var/www/artisan schedule:run > /proc/1/fd/1 2>/proc/1/fd/2
+              restartPolicy: OnFailure
+              volumeMounts:
+              {{- if .Values.datadog.enabled }}
+                - name: apmsocketpath
+                  mountPath: /var/run/datadog
+              {{- end }}
+              {{- with .Values.volumeMounts }}
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              {{- with .Values.image.envFrom }}
+              envFrom:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              env:
+                - name: DD_TRACE_AGENT_URL
+                  value: 'unix:///var/run/datadog/apm.socket'
+              {{- with .Values.image.env }}
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
