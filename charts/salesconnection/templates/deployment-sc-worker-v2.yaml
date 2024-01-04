@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .name }}-worker-deployment
+  name: {{ .name }}-qw
   labels:
     app: {{ .name }}
 spec:
