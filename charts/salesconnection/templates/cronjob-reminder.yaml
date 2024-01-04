@@ -28,7 +28,13 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - /usr/local/bin/php /var/www/artisan schedule:run > /proc/1/fd/1 2>/proc/1/fd/2
+                - |
+                  export DD_TRACE_CLI_ENABLED=1 
+                  export DD_TRACE_GENERATE_ROOT_SPAN=0 
+                  export DD_TRACE_AUTO_FLUSH_ENABLED=1 
+                  export DD_SERVICE=cli-cronjob 
+                  /usr/local/bin/php /var/www/artisan schedule:run > /proc/1/fd/1 2>/proc/1/fd/2
+                  sleep 5
               volumeMounts:
               {{- if .Values.datadog.enabled }}
                 - name: apmsocketpath
