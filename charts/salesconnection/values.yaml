@@ -134,8 +134,8 @@ queueworker:
       count: 3
       queue_env_key: EXPORT_QUEUE
       timeout: 300
-  nodeSelector:
-    queue-worker: owned
+  nodeSelector: {}
+    # queue-worker: owned
   reminderWorker:
     enabled: false
     count: 5
