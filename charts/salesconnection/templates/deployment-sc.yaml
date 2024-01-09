@@ -64,10 +64,16 @@ spec:
             httpGet:
               path: /
               port: http
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 10
           readinessProbe:
             httpGet:
               path: /
               port: http
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 10
           volumeMounts:
           {{- if .Values.datadog.enabled }}
             - name: apmsocketpath
