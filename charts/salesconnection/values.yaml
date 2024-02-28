@@ -35,6 +35,9 @@ podAnnotations:
 volumeMounts:
 volumes:
 
+cron:
+  enabled: false
+
 podSecurityContext: {}
   # fsGroup: 2000
 
