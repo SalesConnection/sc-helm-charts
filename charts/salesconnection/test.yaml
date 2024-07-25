@@ -1,0 +1,129 @@
+---
+# Source: salesconnection/templates/deployment-sc.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-salesconnection
+  labels:
+    helm.sh/chart: salesconnection-0.11.3-alpha.1
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.6"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: salesconnection
+      app.kubernetes.io/instance: release-name
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: "laravel-env"
+        ad.datadoghq.com/salesconnection.logs: |
+          [
+            {"source":"container","service":"Laravel-log"}
+          ]
+      labels:
+        app.kubernetes.io/name: salesconnection
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: sc-sa
+      securityContext:
+        {}
+      # spec:
+      initContainers:
+        - name: init-log-setup
+          image: busybox:1.28
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
+            touch /var/run/datadog/ddlog-prelive.log
+            chmod 666 /var/run/datadog/ddlog-prelive.log
+          volumeMounts:
+            - name: ddlog-prelive
+              mountPath: /var/run/datadog/
+          resources:
+            {}
+            # requests:
+            #   memory:
+            #   cpu:
+            # limits:
+            #   memory:
+            #   cpu:
+
+      volumes:
+        - name: apmsocketpath
+          hostPath:
+            path: /var/run/datadog/
+#add dd-log prelive volume here
+        - name: ddlog-prelive
+          hostPath:
+            path: /var/run/datadog/
+      containers:
+        - name: salesconnection
+          securityContext:
+            {}
+          image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/main-sc-laravel:92e93a3c9d8f2c3c5d626e8f155317543199c704"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: fpm
+              containerPort: 9000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 10
+          volumeMounts:
+            - name: apmsocketpath
+              mountPath: /var/run/datadog
+  #add dd-log prelive volumeMount here
+            - name: ddlog-prelive
+              mountPath: "/var/run/datadog/"
+          envFrom:
+            - configMapRef:
+                name: laravel-env
+          env:
+            - name: DD_TRACE_AGENT_URL
+              value: 'unix:///var/run/datadog/apm.socket'
+            - name: DD_TRACE_AGENT_URL
+              value: unix:///var/run/datadog/apm.socket
+            - name: DD_ENV
+              value: csr-staging
+          resources:
+            {}
+        - name: php-fpm-prometheus-exporter
+          image: hipages/php-fpm_exporter:2
+          ports:
+            - name: metrics
+              containerPort: 9253
+              protocol: TCP
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: salesconnection
+              app.kubernetes.io/instance: release-name
+          matchLabelKeys:
+            - pod-template-hash
