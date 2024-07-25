@@ -38,11 +38,35 @@ spec:
       serviceAccountName: {{ include "salesconnection.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      # spec:
+      initContainers:
+        - name: init-log-setup
+          image: busybox:1.28
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              touch /var/run/datadog/ddlog-prelive.log
+              chmod 666 /var/run/datadog/ddlog-prelive.log
+          volumeMounts:
+            - name: ddlog-prelive
+              mountPath: "/var/run/datadog/"
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+            # requests:
+            #   memory:
+            #   cpu:
+            # limits:
+            #   memory:
+            #   cpu:
+
       volumes:
       {{- if .Values.datadog.enabled }}
         - name: apmsocketpath
           hostPath:
             path: /var/run/datadog/
+#add dd-log prelive volume here
+        - name: ddlog-prelive
+          hostPath:
+            path: "/var/run/datadog/"
       {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
@@ -78,6 +102,9 @@ spec:
           {{- if .Values.datadog.enabled }}
             - name: apmsocketpath
               mountPath: /var/run/datadog
+  #add dd-log prelive volumeMount here
+            - name: ddlog-prelive
+              mountPath: "/var/run/datadog/"
           {{- end }}
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}

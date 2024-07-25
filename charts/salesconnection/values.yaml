@@ -11,13 +11,13 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "92e93a3c9d8f2c3c5d626e8f155317543199c704"
   envFrom:
-    - configMapRef:
-        name: laravel-env
+  - configMapRef:
+      name: laravel-env
   env:
-    - name: DD_TRACE_AGENT_URL
-      value: 'unix:///var/run/datadog/apm.socket'
-    - name: DD_ENV
-      value: csr-staging
+  - name: DD_TRACE_AGENT_URL
+    value: 'unix:///var/run/datadog/apm.socket'
+  - name: DD_ENV
+    value: csr-staging
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -26,28 +26,46 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
-  annotations: 
+  annotations:
     eks.amazonaws.com/role-arn: ""
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: "sc-sa"
 podAnnotations:
-volumeMounts:
-volumes:
+
+# volumeMounts:
+# volumes:
+# spec:
+#   initContainers:
+#   - name: init-log-setup
+#     image: busybox:1.28
+#     command: ["/bin/sh", "-c"]
+#     args:
+#     - |
+#       touch /var/run/datadog/ddlog-prelive.log
+#       chmod 666 /var/run/datadog/ddlog-prelive.log
+#     volumeMounts:
+#     - name:
+#       mountPath: ""
+#   volumes:
+#   - name:
+#     hostPath:
+#       path: ""
 
 cron:
   enabled: false
 
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
 
 service:
   type: ClusterIP
@@ -59,30 +77,30 @@ ingress:
   className: "nginx"
   annotations: {}
   hosts:
-    - host: example.com
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            port:
-              number: 80
-  tls: 
+  - host: example.com
+    paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service:
+          port:
+            number: 80
+  tls:
   - hosts:
     - example.com
     secretName: example-tls
-
+            
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
 autoscaling:
   enabled: false
@@ -105,40 +123,40 @@ datadog:
 queueworker:
   enabled: true
   queues:
-    - name: checkin-worker
-      enabled: false
-      replica: 1
-      count: 5
-      queue_env_key: CHECKIN_QUEUE
-    - name: import-worker
-      enabled: false
-      replica: 1
-      count: 3
-      queue_env_key: IMPORT_QUEUE
-      timeout: 300
-    - name: reminder-worker
-      enabled: false
-      replica: 1
-      count: 5
-      connection: reminder
-    - name: laravel-seqnum
-      enabled: false
-      replica: 2
-      count: 5
-      connection: seqnum
-    - name: laravel-worker
-      enabled: false
-      replica: 1
-      count: 5
-      queue_env_key: REMINDER_QUEUE
-    - name: export-worker
-      enabled: false
-      replica: 1
-      count: 3
-      queue_env_key: EXPORT_QUEUE
-      timeout: 300
+  - name: checkin-worker
+    enabled: false
+    replica: 1
+    count: 5
+    queue_env_key: CHECKIN_QUEUE
+  - name: import-worker
+    enabled: false
+    replica: 1
+    count: 3
+    queue_env_key: IMPORT_QUEUE
+    timeout: 300
+  - name: reminder-worker
+    enabled: false
+    replica: 1
+    count: 5
+    connection: reminder
+  - name: laravel-seqnum
+    enabled: false
+    replica: 2
+    count: 5
+    connection: seqnum
+  - name: laravel-worker
+    enabled: false
+    replica: 1
+    count: 5
+    queue_env_key: REMINDER_QUEUE
+  - name: export-worker
+    enabled: false
+    replica: 1
+    count: 3
+    queue_env_key: EXPORT_QUEUE
+    timeout: 300
   nodeSelector: {}
-    # queue-worker: owned
+  # queue-worker: owned
   reminderWorker:
     enabled: false
     count: 5
@@ -181,10 +199,10 @@ repeatJob:
     tag: latest
     pullPolicy: Always
     ports:
-      - containerPort: 8080
+    - containerPort: 8080
     env:
-      - name: PORT
-        value: 8080
+    - name: PORT
+      value: 8080
   podAnnotations: {}
   service:
     enabled: true
@@ -223,7 +241,7 @@ scMessenger:
   enabled: true
   replicaCount: 1
   serviceAccount:
-    annotations: 
+    annotations:
       eks.amazonaws.com/role-arn: ""
     name: "sc-messenger-sa"
   image:
@@ -231,8 +249,8 @@ scMessenger:
     repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger
     tag: v1.1.1-alpha.2
     envFrom:
-      - configMapRef:
-          name: sc-messenger
+    - configMapRef:
+        name: sc-messenger
     pullPolicy: Always
   configMap:
     APP_NAME: SC Messenger
@@ -277,14 +295,14 @@ scMessenger:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       nginx.ingress.kubernetes.io/proxy-body-size: 5m
     hosts:
-      - host: example.com
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              port:
-                number: 80
+    - host: example.com
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            port:
+              number: 80
     tls:
     - hosts:
       - example.com
@@ -294,7 +312,7 @@ scMessengerStaging:
   enabled: true
   replicaCount: 1
   serviceAccount:
-    annotations: 
+    annotations:
       eks.amazonaws.com/role-arn: ""
     name: "sc-messenger-sa"
   image:
@@ -302,8 +320,8 @@ scMessengerStaging:
     repository: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger
     tag: v1.1.1-alpha.2
     envFrom:
-      - configMapRef:
-          name: sc-messenger
+    - configMapRef:
+        name: sc-messenger
     pullPolicy: Always
   configMap:
     APP_NAME: SC Messenger
@@ -348,14 +366,14 @@ scMessengerStaging:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
       nginx.ingress.kubernetes.io/proxy-body-size: 5m
     hosts:
-      - host: example.com
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              port:
-                number: 80
+    - host: example.com
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            port:
+              number: 80
     tls:
     - hosts:
       - example.com
