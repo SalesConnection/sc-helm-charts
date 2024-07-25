@@ -3,6 +3,21 @@ entries:
   salesconnection:
   - apiVersion: v2
     appVersion: 0.3.5
+    created: "2024-07-25T08:29:10.509746696Z"
+    dependencies:
+    - name: reloader
+      repository: https://stakater.github.io/stakater-charts
+      version: 1.0.40
+    description: A Helm chart for Kubernetes
+    digest: 0da5643e08acb335deb472ba2e0d4a13e235d551980ddb23798f67a6891cba62
+    icon: https://cdn.salesconnection.my/pages/image/sales-conn-logo-fullcolor+(1).webp
+    name: salesconnection
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/salesconnection-0.11.1-alpha.1/salesconnection-0.11.1-alpha.1.tgz
+    version: 0.11.1-alpha.1
+  - apiVersion: v2
+    appVersion: 0.3.5
     created: "2024-02-28T10:00:02.731227736Z"
     dependencies:
     - name: reloader
@@ -853,4 +868,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/salesconnection-0.1.0/salesconnection-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-28T10:00:02.731454899Z"
+generated: "2024-07-25T08:29:10.51010797Z"
