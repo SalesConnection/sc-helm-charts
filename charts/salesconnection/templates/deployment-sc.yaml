@@ -73,13 +73,6 @@ spec:
         - name: apmsocketpath
           hostPath:
             path: /var/run/datadog/
-#add dd-log prelive volume here
-        - name: {{ .Values.volumes_ddlog_prelive_name }}
-          hostPath:
-            path: {{ .Values.volumes_ddlog_prelive_hostpath_path }}
-        - name: robots-volume
-          configmap:
-            name: robots-configmap
       {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}

@@ -16,9 +16,7 @@ data:
   # Hardcoded and unchanged values here
   APP_NAME: SC
   SERVER_TYPE: salesconnection
-  APP_ENV: live
   AWS_BUCKET_TMP: salesconnection-temp-files
-  DATADOG_LOG: php://stdout
   IMG_UPLOAD_PATH: /var/www/uploads
   # Email what use for idk
   MAIL_MAILER: smtp
