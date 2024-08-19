@@ -46,6 +46,18 @@ spec_initContainers_volumeMounts_mountPath: "/var/run/datadog/"
 volumes_ddlog_prelive_name: ddlog-prelive
 volumes_ddlog_prelive_hostpath_path: "/var/run/datadog/"
 
+spec_initContainers_name_robots: init-log-setup
+spec_initContainers_image_robots: busybox:1.28
+spec_initContainers_command_robots: ["/bin/sh", "-c"]
+spec_initContainers_args1_robots: ""
+spec_initContainers_args2_robots: ""
+spec_initContainers_args3_robots: ""
+spec_initContainers_args4_robots: ""
+spec_initContainers_volumeMounts_name_robots: ""
+spec_initContainers_volumeMounts_mountPath_robots: ""
+volumes_ddlog_prelive_name_robots: ""
+volumes_ddlog_prelive_hostpath_path_robots: ""
+
 cron:
   enabled: false
 
