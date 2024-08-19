@@ -21,7 +21,6 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -31,7 +30,6 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: "sc-sa"
-datadoglog:
 podAnnotations:
 volume:
 volumeMount:
@@ -45,14 +43,18 @@ spec_initContainers_volumeMounts_name: ddlog-prelive
 spec_initContainers_volumeMounts_mountPath: "/var/run/datadog/"
 volumes_ddlog_prelive_name: ddlog-prelive
 volumes_ddlog_prelive_hostpath_path: "/var/run/datadog/"
-# spec_initContainers_name_robots: robots-init
-# spec_initContainers_image_robots: busybox:latest
-# spec_initContainers_command_robots: ["/bin/sh", "-c",'echo The app is running! && sleep 3600']
-# spec_initContainers_volumeMounts_name_robots: robots-volume
-# spec_initContainers_volumeMounts_mountPath_robots: "/var/www/public/"
-# volumes_name_robots: robots-volume
-# volumes_hostpath_path_robots: robots-configmap
-
+spec_initContainers_name_robots: robots-init
+spec_initContainers_image_robots: busybox:latest
+spec_initContainers_command_robots: ["/bin/sh", "-c",'echo The app is running! && sleep 3600']
+spec_initContainers_volumeMounts_name_robots: robots-volume
+spec_initContainers_volumeMounts_mountPath_robots: "/var/www/public/"
+volumes_name_robots: robots-volume
+volumes_hostpath_path_robots: robots-configmap
+datadoglog:
+  ad.datadoghq.com/salesconnection.logs: |
+    [
+      {"source":"container","service":"Laravel-log","type":"file","path":"/var/run/datadog/ddlog-prelive.log"}
+    ] ⁠
 cron:
   enabled: false
 

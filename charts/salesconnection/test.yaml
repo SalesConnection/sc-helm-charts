@@ -1,0 +1,1032 @@
+---
+# Source: salesconnection/charts/reloader/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    meta.helm.sh/release-namespace: "test"
+    meta.helm.sh/release-name: "release-name"
+  labels:
+    app: release-name-reloader
+    chart: "reloader-1.0.40"
+    release: "release-name"
+    heritage: "Helm"
+    app.kubernetes.io/managed-by: "Helm"
+  name: release-name-reloader
+  namespace: test
+---
+# Source: salesconnection/templates/serviceaccount-external-secrets.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: external-secrets-service-account
+  labels:
+    helm.sh/chart: salesconnection-0.11.8-alpha.1
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::672944514151:role/external-secrets-parameter-store
+---
+# Source: salesconnection/templates/serviceaccount-sc-messenger.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sc-messenger-sa
+  labels:
+    helm.sh/chart: salesconnection-0.11.8-alpha.1
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    eks.amazonaws.com/role-arn: ""
+---
+# Source: salesconnection/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sc-sa
+  labels:
+    helm.sh/chart: salesconnection-0.11.8-alpha.1
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    eks.amazonaws.com/role-arn: ""
+---
+# Source: salesconnection/templates/cm-robots-sc.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: robots-configmap
+data:
+  robots.txt: |
+    User-agent: *
+    Disallow: /
+---
+# Source: salesconnection/templates/cm-sc-messenger-staging.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sc-messenger-staging
+  labels:
+    name: sc-messenger-staging
+data:
+  APP_DEBUG: "true"
+  APP_ENV: local
+  APP_KEY: ""
+  APP_NAME: SC Messenger
+  APP_PORT: "8081"
+  APP_TIMEZONE: UTC
+  APP_URL: http://localhost
+  AWS_ACCESS_KEY_ID: ""
+  AWS_DEFAULT_REGION: ""
+  AWS_SECRET_ACCESS_KEY: ""
+  CACHE_DRIVER: file
+  DB_CONNECTION: ""
+  DB_DATABASE: ""
+  DB_HOST: ""
+  DB_PASSWORD: ""
+  DB_PORT: ""
+  DB_USERNAME: ""
+  LOG_CHANNEL: stack
+  LOG_SLACK_WEBHOOK_URL: ""
+  QUEUE_CONNECTION: sqs
+  SQS_PREFIX: ""
+  SQS_QUEUE: ""
+---
+# Source: salesconnection/templates/cm-sc-messenger.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sc-messenger
+  labels:
+    name: sc-messenger
+data:
+  APP_DEBUG: "true"
+  APP_ENV: local
+  APP_KEY: ""
+  APP_NAME: SC Messenger
+  APP_PORT: "8081"
+  APP_TIMEZONE: UTC
+  APP_URL: http://localhost
+  AWS_ACCESS_KEY_ID: ""
+  AWS_DEFAULT_REGION: ""
+  AWS_SECRET_ACCESS_KEY: ""
+  CACHE_DRIVER: file
+  DB_CONNECTION: ""
+  DB_DATABASE: ""
+  DB_HOST: ""
+  DB_PASSWORD: ""
+  DB_PORT: ""
+  DB_USERNAME: ""
+  LOG_CHANNEL: stack
+  LOG_SLACK_WEBHOOK_URL: ""
+  QUEUE_CONNECTION: sqs
+  SQS_PREFIX: ""
+  SQS_QUEUE: ""
+---
+# Source: salesconnection/templates/cm-sc-supervisor-conf.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sc-supervisor
+  labels:
+    name: sc-supervisor
+data:
+---
+# Source: salesconnection/templates/cm-sc-supervisor-entrypoint.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: supervisor-entrypoint
+  labels:
+    name: supervisor-entrypoint
+data:
+  entrypoint.sh: |-
+    #!/bin/sh
+    supervisord
+---
+# Source: salesconnection/templates/cm-sc.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: laravel-env
+  labels:
+    name: laravel-env
+data:
+  REPEAT_JOB_CONTAINER_PORT: "8080"
+  REPEAT_JOB_CONTAINER_URL: "http://repeat-job.test"
+  NOTI_SERVER_CONTAINER_PORT: "8080"
+  NOTI_SERVER_CONTAINER_URL: "http://noti-server.test"
+  APP_URL: "https://example.com"
+  SITE_URL: "https://example.com"
+  PDF_PUBLIC_URL: "https://example.com"
+  DOMAIN: "example.com"
+  # Hardcoded and unchanged values here
+  APP_NAME: SC
+  SERVER_TYPE: salesconnection
+  APP_ENV: live
+  AWS_BUCKET_TMP: salesconnection-temp-files
+  DATADOG_LOG: php://stdout
+  IMG_UPLOAD_PATH: /var/www/uploads
+  # Email what use for idk
+  MAIL_MAILER: smtp
+  MAIL_HOST: smtp.mailtrap.io
+  MAIL_PORT: "2525"
+  MAIL_USERNAME: "null"
+  MAIL_PASSWORD: "null"
+  MAIL_ENCRYPTION: "null"
+  MAIL_FROM_ADDRESS: "null"
+  MAIL_FROM_NAME: "SC"
+  # Append and overwrite
+  APP_DEBUG: "true"
+  APP_EVENT_BRIDGE_ENV: csr
+  APP_KEY: ""
+  AWS_ACCESS_KEY_ID: ""
+  AWS_BUCKET: salesconnection
+  AWS_DEFAULT_REGION: ap-southeast-1
+  AWS_SECRET_ACCESS_KEY: ""
+  AWS_SQS_ACCESS_KEY_ID: ""
+  AWS_SQS_EMAIL_QUEUE: ""
+  AWS_SQS_SECRET_ACCESS_KEY: ""
+  AWS_URL: ""
+  BROADCAST_DRIVER: log
+  CACHE_DRIVER: file
+  DB_DATABASE: ""
+  DB_HOST: ""
+  DB_HOST_READER: ""
+  DB_PASSWORD: ""
+  DB_USERNAME: ""
+  DISTANCE_CLASS: ""
+  EXPORT_QUEUE: reminder-csr
+  GOOGLE_APIKEY: ""
+  IMPORT_QUEUE: import-csr
+  LOG_CHANNEL: daily
+  LOG_DATADOG: "true"
+  MONGODB_DB: contact
+  MONGODB_DSN: ""
+  ONESIGNAL_APPID: ec8d0443-ecec-4334-8acd-cc20181e7c6b
+  ONESIGNAL_CH_ALARM: 316486f5-3f6c-4501-9e67-a4eca6135119
+  ONESIGNAL_CH_ALERT: d4e3f92b-cfb3-48d0-ab36-ed48343eda78
+  ONESIGNAL_CH_DEFAULT: b8c67bd5-79f5-4c3c-ba63-9771efc23769
+  ONESIGNAL_TOKEN: ""
+  QUEUE_CONNECTION: sync
+  QUEUE_EMAIL: email:live
+  QUEUE_USE_SEQNUM: seqnum
+  REMINDER_QUEUE: reminder-csr
+  S3_BUCKET: ""
+  S3_KEY: ""
+  S3_REGION: singapore
+  S3_SECRET: ""
+  SESSION_DRIVER: file
+  SESSION_LIFETIME: "120"
+  SQS_GENQR_QUEUE: qr-generator-csr
+  SQS_SEQNUM_QUEUE: SCQueue-csr.fifo
+  STARROCKS_DATABASE: ""
+  STARROCKS_HOST: ""
+  STARROCKS_PASSWORD: ""
+  STARROCKS_PORT: ""
+  STARROCKS_USERNAME: ""
+---
+# Source: salesconnection/templates/qr-generator-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qr-generator-cm
+  labels:
+    name: qr-generator-cm
+data:
+  node_env: csr-staging
+  queue_name: qr-generator-csr
+---
+# Source: salesconnection/charts/reloader/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRole
+metadata:
+  annotations:
+    meta.helm.sh/release-namespace: "test"
+    meta.helm.sh/release-name: "release-name"
+  labels:
+    app: release-name-reloader
+    chart: "reloader-1.0.40"
+    release: "release-name"
+    heritage: "Helm"
+    app.kubernetes.io/managed-by: "Helm"
+  name: release-name-reloader-role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - configmaps
+    verbs:
+      - list
+      - get
+      - watch
+  - apiGroups:
+      - "apps"
+    resources:
+      - deployments
+      - daemonsets
+      - statefulsets
+    verbs:
+      - list
+      - get
+      - update
+      - patch
+  - apiGroups:
+      - "extensions"
+    resources:
+      - deployments
+      - daemonsets
+    verbs:
+      - list
+      - get
+      - update
+      - patch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+# Source: salesconnection/charts/reloader/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    meta.helm.sh/release-namespace: "test"
+    meta.helm.sh/release-name: "release-name"
+  labels:
+    app: release-name-reloader
+    chart: "reloader-1.0.40"
+    release: "release-name"
+    heritage: "Helm"
+    app.kubernetes.io/managed-by: "Helm"
+  name: release-name-reloader-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: release-name-reloader-role
+subjects:
+  - kind: ServiceAccount
+    name: release-name-reloader
+    namespace: test
+---
+# Source: salesconnection/templates/service-noti.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: noti-server
+spec:
+  ports:
+    - name: noti-server
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: noti-server
+---
+# Source: salesconnection/templates/service-repeat-job.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: repeat-job
+spec:
+  ports:
+    - name: repeat-job
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: repeat-job
+---
+# Source: salesconnection/templates/service-sc-messenger-staging.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sc-messenger-staging
+  labels:
+    app: sc-messenger-staging
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: sc-messenger-staging
+---
+# Source: salesconnection/templates/service-sc-messenger.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sc-messenger
+  labels:
+    app: sc-messenger
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: sc-messenger
+---
+# Source: salesconnection/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-salesconnection
+  labels:
+    helm.sh/chart: salesconnection-0.11.8-alpha.1
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+    - port: 9253
+      targetPort: 9253
+      protocol: TCP
+      name: php-fpm-prometheus-exporter
+    - port: 9876
+      targetPort: 9876
+      protocol: TCP
+      name: supervisor-prometheus-exporter
+  selector:
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+---
+# Source: salesconnection/charts/reloader/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    meta.helm.sh/release-namespace: "test"
+    meta.helm.sh/release-name: "release-name"
+  labels:
+    app: release-name-reloader
+    chart: "reloader-1.0.40"
+    release: "release-name"
+    heritage: "Helm"
+    app.kubernetes.io/managed-by: "Helm"
+    group: com.stakater.platform
+    provider: stakater
+    version: v1.0.40
+  name: release-name-reloader
+  namespace: test
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: release-name-reloader
+      release: "release-name"
+  template:
+    metadata:
+      labels:
+        app: release-name-reloader
+        chart: "reloader-1.0.40"
+        release: "release-name"
+        heritage: "Helm"
+        app.kubernetes.io/managed-by: "Helm"
+        group: com.stakater.platform
+        provider: stakater
+        version: v1.0.40
+    spec:
+      containers:
+      - image: "ghcr.io/stakater/reloader:v1.0.40"
+        imagePullPolicy: IfNotPresent
+        name: release-name-reloader
+
+        ports:
+        - name: http
+          containerPort: 9090
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: http
+          timeoutSeconds: 5
+          failureThreshold: 5
+          periodSeconds: 10
+          successThreshold: 1
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: http
+          timeoutSeconds: 5
+          failureThreshold: 5
+          periodSeconds: 10
+          successThreshold: 1
+          initialDelaySeconds: 10
+
+        securityContext:
+          {}
+      securityContext: 
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: release-name-reloader
+---
+# Source: salesconnection/templates/deployment-noti.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noti-server-deployment
+  labels:
+    app: noti-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: noti-server
+  template:
+    metadata:
+      labels:
+        app: noti-server
+    spec:
+      serviceAccountName: sc-sa
+      securityContext:
+        null
+      containers:
+        - name: noti-server
+          image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/noti-server:b0d09189bf7737c2a0f1d0cbc9c48c5ff2b3fe12"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          env:
+          - name: URL
+            value: "https://example.com"
+          - name: PORT
+            value: "8080"
+          resources:
+            null
+---
+# Source: salesconnection/templates/deployment-qr-generator.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qr-generator-deployment
+  labels:
+    app: qr-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qr-generator
+  template:
+    metadata:
+      labels:
+        app: qr-generator
+    spec:
+      serviceAccountName: sc-sa
+      securityContext:
+        null
+      containers:
+        - name: qr-generator
+          image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/qr-generator:5308f4c2af6240c96440a26021f8b209d4ca462c"
+          imagePullPolicy: Always
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          env:
+            - name: QUEUE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: queue_name
+                  name: qr-generator-cm
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  key: node_env
+                  name: qr-generator-cm
+          resources:
+            null
+---
+# Source: salesconnection/templates/deployment-repeat-job.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: repeat-job-deployment
+  labels:
+    app: repeat-job
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: repeat-job
+  template:
+    metadata:
+      labels:
+        app: repeat-job
+    spec:
+      serviceAccountName: sc-sa
+      securityContext:
+        null
+      containers:
+        - name: repeat-job
+          image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/repeat-job:latest"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          env:
+            - name: URL
+              value: "https://example.com"
+            - name: PORT
+              value: 8080
+          resources:
+            null
+---
+# Source: salesconnection/templates/deployment-sc-messenger-stg.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sc-messenger-staging-deployment
+  labels:
+    app: sc-messenger-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sc-messenger-staging
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: "sc-messenger-staging"
+      labels:
+        app: sc-messenger-staging
+    spec:
+      serviceAccountName: sc-messenger-sa
+      securityContext:
+        null
+      volumes:
+      containers:
+        - name: sc-messenger-staging
+          image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger:v1.1.1-alpha.2"
+          imagePullPolicy: Always
+          ports:
+            - name: supervisor
+              containerPort: 9001
+              protocol: TCP
+          env:
+            - name: DD_TRACE_AGENT_URL
+              value: 'unix:///var/run/datadog/apm.socket'
+          envFrom:
+            - configMapRef:
+                name: sc-messenger
+          resources:
+            null
+          volumeMounts:
+        - name: supervisor-prometheus-exporter
+          image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/supervisor-prometheus-exporter:latest
+          ports:
+            - name: metrics
+              containerPort: 9876
+              protocol: TCP
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: sc-messenger-staging
+          matchLabelKeys:
+            - pod-template-hash
+---
+# Source: salesconnection/templates/deployment-sc-messenger.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sc-messenger-deployment
+  labels:
+    app: sc-messenger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sc-messenger
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: "sc-messenger"
+      labels:
+        app: sc-messenger
+    spec:
+      serviceAccountName: sc-messenger-sa
+      securityContext:
+        null
+      volumes:
+      containers:
+        - name: sc-messenger
+          image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/sc-messenger:v1.1.1-alpha.2"
+          imagePullPolicy: Always
+          ports:
+            - name: supervisor
+              containerPort: 9001
+              protocol: TCP
+          env:
+            - name: DD_TRACE_AGENT_URL
+              value: 'unix:///var/run/datadog/apm.socket'
+          envFrom:
+            - configMapRef:
+                name: sc-messenger
+          resources:
+            null
+          volumeMounts:
+        - name: supervisor-prometheus-exporter
+          image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/supervisor-prometheus-exporter:latest
+          ports:
+            - name: metrics
+              containerPort: 9876
+              protocol: TCP
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: sc-messenger
+          matchLabelKeys:
+            - pod-template-hash
+---
+# Source: salesconnection/templates/deployment-sc.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-salesconnection
+  labels:
+    helm.sh/chart: salesconnection-0.11.8-alpha.1
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: salesconnection
+      app.kubernetes.io/instance: release-name
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: "laravel-env"
+        ad.datadoghq.com/salesconnection.logs: |
+          [
+            {"source":"container","service":"Laravel-log","type":"file","path":"/var/run/datadog/ddlog-prelive.log"}
+          ] ⁠
+      labels:
+        app.kubernetes.io/name: salesconnection
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: sc-sa
+      securityContext:
+        {}
+      # spec:
+      initContainers:
+        - name: init-log-setup
+          image: busybox:1.28
+          command: ["/bin/sh", "-c"]
+          args:
+          - |
+            touch /var/run/datadog/ddlog-prelive.log
+            chmod 666 /var/run/datadog/ddlog-prelive.log
+          volumeMounts:
+            - name: ddlog-prelive
+              mountPath: /var/run/datadog/
+        - name: robots-init
+          image: busybox:latest
+          command: ["/bin/sh", "-c",'echo The app is running! && sleep 3600']
+          volumeMounts:
+          - name: robots-volume
+            mountPath: "/var/www/public/"
+          resources:
+            {}
+            # requests:
+            #   memory:
+            #   cpu:
+            # limits:
+            #   memory:
+            #   cpu:
+
+      volumes:
+        - name: apmsocketpath
+          hostPath:
+            path: /var/run/datadog/
+#add dd-log prelive volume here
+        - name: ddlog-prelive
+          hostPath:
+            path: /var/run/datadog/
+        - name: robots-volume
+          configmap:
+            name: robots-configmap
+      containers:
+        - name: salesconnection
+          securityContext:
+            {}
+          image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/main-sc-laravel:92e93a3c9d8f2c3c5d626e8f155317543199c704"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: fpm
+              containerPort: 9000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 25
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 25
+          volumeMounts:
+            - name: apmsocketpath
+              mountPath: /var/run/datadog
+  #add dd-log prelive volumeMount here
+            - name: ddlog-prelive
+              mountPath: "/var/run/datadog/"
+            - name: robots-volume
+              configmap:
+                name: robots-configmap
+          envFrom:
+            - configMapRef:
+                name: laravel-env
+          env:
+            - name: DD_TRACE_AGENT_URL
+              value: 'unix:///var/run/datadog/apm.socket'
+            - name: DD_TRACE_AGENT_URL
+              value: unix:///var/run/datadog/apm.socket
+            - name: DD_ENV
+              value: csr-staging
+          resources:
+            {}
+        - name: php-fpm-prometheus-exporter
+          image: hipages/php-fpm_exporter:2
+          ports:
+            - name: metrics
+              containerPort: 9253
+              protocol: TCP
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: salesconnection
+              app.kubernetes.io/instance: release-name
+          matchLabelKeys:
+            - pod-template-hash
+---
+# Source: salesconnection/templates/ingress-sc-messenger-staging.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sc-messenger-staging-ingress
+  labels:
+    app: sc-messenger-staging
+  annotations:
+    cert-manager.io/cluster-issuer: cert-manager-letsencrypt-production-route53
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "example.com"
+      secretName: example-tls
+  rules:
+    - host: "example.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sc-messenger-staging
+                port:
+                  number: 80
+---
+# Source: salesconnection/templates/ingress-sc-messenger.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sc-messenger-ingress
+  labels:
+    app: sc-messenger
+  annotations:
+    cert-manager.io/cluster-issuer: cert-manager-letsencrypt-production-route53
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "example.com"
+      secretName: example-tls
+  rules:
+    - host: "example.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sc-messenger
+                port:
+                  number: 80
+---
+# Source: salesconnection/templates/externalsecrets.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: extracted-secrets
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: secretstore-parameterstore
+    kind: SecretStore
+  target:
+    name: acm
+    creationPolicy: Owner
+  data:
+    - secretKey: prelive-arn
+      remoteRef:
+        metadataPolicy: Fetch
+        key: /acm/prelive2/arn
+---
+# Source: salesconnection/templates/sc-php-fpm-prometheus-pod-monitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: sc-pod-monitor-php-fpm-prometheus-crd
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: salesconnection
+      app.kubernetes.io/instance: release-name
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      scrapeTimeout: 4s
+  namespaceSelector:
+    matchNames:
+      - test
+---
+# Source: salesconnection/templates/sc-supervisor-prometheus-pod-monitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: sc-messenger
+spec:
+  selector:
+    matchLabels:
+      app: sc-messenger
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      scrapeTimeout: 4s
+  namespaceSelector:
+    matchNames:
+      - test
+---
+# Source: salesconnection/templates/sc-supervisor-prometheus-pod-monitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: sc-messenger-staging
+spec:
+  selector:
+    matchLabels:
+      app: sc-messenger-staging
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      scrapeTimeout: 4s
+  namespaceSelector:
+    matchNames:
+      - test
+---
+# Source: salesconnection/templates/secretstore.yaml
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: secretstore-parameterstore
+spec:
+  provider:
+    aws:
+      service: ParameterStore
+      region: ap-southeast-1
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: external-secrets-service-account
+---
+# Source: salesconnection/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-salesconnection-test-connection"
+  labels:
+    helm.sh/chart: salesconnection-0.11.8-alpha.1
+    app.kubernetes.io/name: salesconnection
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-salesconnection:80']
+  restartPolicy: Never
