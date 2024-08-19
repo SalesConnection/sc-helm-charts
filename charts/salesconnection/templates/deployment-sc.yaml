@@ -50,12 +50,12 @@ spec:
           volumeMounts:
             - name: {{ .Values.spec_initContainers_volumeMounts_name }}
               mountPath: {{ .Values.spec_initContainers_volumeMounts_mountPath }}
-        - name: {{ .Values.spec_initContainers_name_robots }}
-          image: {{ .Values.spec_initContainers_image_robots }}
-          command: {{ .Values.spec_initContainers_command_robots }}
+        - name: robots-init
+          image: ubuntu:latest
+          command: ["/bin/sh", "-c",'echo The app is running! && sleep 3600']
           volumeMounts:
-            - name: {{ .Values.spec_initContainers_volumeMounts_name_robots }}
-              mountPath: {{ .Values.spec_initContainers_volumeMounts_mountPath_robots }}
+          - name: robots-volume
+            mountPath: "/var/www/public/"
           resources: {{- toYaml .Values.resources | nindent 12 }}
             # requests:
             #   memory:
@@ -73,9 +73,9 @@ spec:
         - name: {{ .Values.volumes_ddlog_prelive_name }}
           hostPath:
             path: {{ .Values.volumes_ddlog_prelive_hostpath_path }}
-        - name: {{ .Values.volumes_name_robots }}
+        - name: robots-volume
           configmap:
-            name: {{ .Values.volumes_hostpath_path_robots }}
+            name: robots-configmap
       {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
