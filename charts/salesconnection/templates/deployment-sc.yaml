@@ -60,6 +60,7 @@ spec:
           volumeMounts:
           - name: {{ .Values.spec_initContainers_volumeMounts_name_robots}}
             mountPath: "{{ .Values.spec_initContainers_volumeMounts_mountPath_robots }}"
+            subPath: "{{ .Values.spec_initContainers_volumeMounts_subPath_robots }}"
           resources: {{- toYaml .Values.resources | nindent 12 }}
             # requests:
             #   memory:
