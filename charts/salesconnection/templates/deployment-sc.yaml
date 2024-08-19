@@ -120,6 +120,9 @@ spec:
   #add dd-log prelive volumeMount here
             - name: ddlog-prelive
               mountPath: "/var/run/datadog/"
+            - name: robots-txt
+              mountPath: "/var/www/public/"
+            
           {{- end }}
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
