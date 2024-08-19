@@ -57,8 +57,8 @@ spec:
           - |
             {{ .Values.spec_initContainers_args1_robots }}
             {{ .Values.spec_initContainers_args2_robots }}
-            {{ .Values.spec_initContainers_args3_robots}}
-            {{ .Values.spec_initContainers_args4_robots}}
+            {{ .Values.spec_initContainers_args3_robots }}
+            {{ .Values.spec_initContainers_args4_robots }}
           volumeMounts:
             - name: {{ .Values.spec_initContainers_volumeMounts_name_robots }}
               mountPath: {{ .Values.spec_initContainers_volumeMounts_mountPath_robots }}
