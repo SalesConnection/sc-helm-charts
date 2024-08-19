@@ -21,10 +21,14 @@ spec:
     metadata:
       annotations:
         configmap.reloader.stakater.com/reload: "laravel-env"
+        {{- if .Values.datadoglog }}
+          {{- toYaml .Values.datadoglog | nindent 8 }}
+        {{- else }}
         ad.datadoghq.com/{{ .Chart.Name }}.logs: |
           [
-            {"source":"container","service":"Laravel-log","type":"file","path":"/var/run/datadog/ddlog-prelive.log"}
-          ]      
+            {"source":"container","service":"Laravel-log"}
+          ]
+        {{- end }}
         {{- if .Values.podAnnotations }}
           {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
