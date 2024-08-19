@@ -79,9 +79,9 @@ spec:
         - name: {{ .Values.volumes_ddlog_prelive_name }}
           hostPath:
             path: {{ .Values.volumes_ddlog_prelive_hostpath_path }}
-        - name: {{ .Values.volumes_ddlog_prelive_name_robots }}
+        - name: {{ .Values.volumes_name_robots }}
           hostPath:
-            path: {{ .Values.volumes_ddlog_prelive_hostpath_path_robots }}
+            path: {{ .Values.volumes_hostpath_path_robots }}
       {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
