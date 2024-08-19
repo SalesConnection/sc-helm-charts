@@ -32,7 +32,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: "sc-sa"
 podAnnotations:
-
+volume:
+volumeMount:
 spec_initContainers_name: init-log-setup
 spec_initContainers_image: busybox:1.28
 spec_initContainers_command: ["/bin/sh", "-c"]
@@ -47,10 +48,6 @@ volumes_ddlog_prelive_hostpath_path: "/var/run/datadog/"
 spec_initContainers_name_robots: robots-init
 spec_initContainers_image_robots: busybox:latest
 spec_initContainers_command_robots: ["/bin/sh", "-c",'echo The app is running! && sleep 3600']
-# spec_initContainers_args1_robots: touch /var/www/public/robots.txt
-# spec_initContainers_args2_robots: chmod 666 /var/www/public/robots.txt
-# spec_initContainers_args3_robots: ""
-# spec_initContainers_args4_robots: ""
 spec_initContainers_volumeMounts_name_robots: robots-volume
 spec_initContainers_volumeMounts_mountPath_robots: "/var/www/public/"
 volumes_name_robots: robots-volume
