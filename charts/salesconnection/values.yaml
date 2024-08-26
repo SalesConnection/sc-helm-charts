@@ -31,9 +31,9 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: "sc-sa"
 podAnnotations:
-volumes: {}
-volumeMounts: {}
-initContainers: {}
+volumes: []
+volumeMounts: []
+initContainers: []
 datadoglog: {}
 cron:
   enabled: true
@@ -138,7 +138,7 @@ queueworker:
     count: 3
     queue_env_key: EXPORT_QUEUE
     timeout: 300
-  nodeSelector:
+  nodeSelector: {}
   reminderWorker:
     enabled: false
     count: 5
