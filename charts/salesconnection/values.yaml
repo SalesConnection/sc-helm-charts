@@ -31,10 +31,10 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: "sc-sa"
 podAnnotations:
-volumes: []
-volumeMounts: []
-initContainers: []
-datadoglog: {}
+volumes:
+volumeMounts:
+initContainers:
+datadoglog:
 cron:
   enabled: true
 
