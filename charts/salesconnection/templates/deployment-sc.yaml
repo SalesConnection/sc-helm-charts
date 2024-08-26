@@ -20,7 +20,7 @@ spec:
   template:
     metadata:
       annotations:
-        configmap.reloader.stakater.com/reload: "laravel-env"
+        configmap.reloader.stakater.com/reload: "laravel-env,robots-configmap"
         {{- if .Values.datadoglog }}
           {{- toYaml .Values.datadoglog | nindent 8 }}
         {{- else }}
