@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: robots-configmap
 data:
+{{- if .Values.robotscm }}
+  {{- toYaml .Values.robotscm | nindent 2 }}
+{{- else }}
   robots.txt: |
     User-agent: *
-    Disallow: /
+{{- end }}
