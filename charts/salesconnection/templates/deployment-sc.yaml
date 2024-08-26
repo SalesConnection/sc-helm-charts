@@ -50,6 +50,7 @@ spec:
         - name: apmsocketpath
           hostPath:
             path: /var/run/datadog/
+        
       {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}

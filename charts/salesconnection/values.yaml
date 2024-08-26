@@ -31,16 +31,12 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: "sc-sa"
 podAnnotations:
-volumes:
-volumeMounts:
-initContainers:
-datadoglog:
-  ad.datadoghq.com/salesconnection.logs: |
-    [
-      {"source":"container","service":"Laravel-log","type":"file","path":"/var/run/datadog/ddlog-prelive.log"}
-    ]
+volumes: {}
+volumeMounts: {}
+initContainers: {}
+datadoglog: {}
 cron:
-  enabled: false
+  enabled: true
 
 podSecurityContext: {}
 # fsGroup: 2000
@@ -142,8 +138,7 @@ queueworker:
     count: 3
     queue_env_key: EXPORT_QUEUE
     timeout: 300
-  nodeSelector: {}
-  # queue-worker: owned
+  nodeSelector:
   reminderWorker:
     enabled: false
     count: 5
