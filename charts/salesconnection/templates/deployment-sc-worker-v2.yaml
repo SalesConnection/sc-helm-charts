@@ -25,6 +25,14 @@ spec:
         {{- if $.Values.podAnnotations }}
           {{- toYaml $.Values.podAnnotations | nindent 8 }}
         {{- end }}
+        {{- if $.Values.datadoglog }}
+          {{- toYaml $.Values.datadoglog | nindent 8 }}
+        {{- else }}
+        ad.datadoghq.com/{{ $.Chart.Name }}.logs: |
+          [
+            {"source":"container","service":"Laravel-log"}
+          ]
+        {{- end }}
       labels:
         app: {{ .name }}
     spec:
@@ -50,6 +58,10 @@ spec:
       {{- end }}
       {{- with $.Values.volumes }}
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $.Values.initContainers }}
+      initContainers:
+        {{- toYaml $.Values.initContainers | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ $.Chart.Name }}
