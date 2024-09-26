@@ -34,6 +34,17 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/noti-0.1.0/noti-0.1.0.tgz
     version: 0.1.0
+  qr-generator:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-09-26T15:45:19.734926719Z"
+    description: A Helm chart for Kubernetes
+    digest: ba8f957e5d2d417f21751536a7156c619d8e1df130e01bf7178b5e55444a529e
+    name: qr-generator
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/qr-generator-0.1.0/qr-generator-0.1.0.tgz
+    version: 0.1.0
   repeat-job:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -1153,4 +1164,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/salesconnection-0.1.0/salesconnection-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-26T15:04:32.245115982Z"
+generated: "2024-09-26T15:45:19.735086848Z"
