@@ -5,5 +5,8 @@ dependencies:
 - name: repeat-job
   repository: https://salesconnection.github.io/sc-helm-charts
   version: 0.1.0
-digest: sha256:35c1672e0a83a9207c873246eeecb3c1cccce9120f7e9d811379d1ca3572a5e5
-generated: "2024-09-26T18:28:16.346817+08:00"
+- name: noti
+  repository: https://salesconnection.github.io/sc-helm-charts
+  version: 0.1.0
+digest: sha256:b1b271ee2e367fa43f740ff70a9be430ec00b21f04e2a2701bcb95b3c5185af1
+generated: "2024-09-26T23:05:50.948706+08:00"

@@ -157,3 +157,8 @@ repeat-job:
   fullnameOverride: "repeat-job"
   image:
     tag: "a358d34941e84c42d6c8daec839f1ab539e5cd3e"
+
+noti:
+  fullnameOverride: "noti-server"
+  image:
+    tag: "b0d09189bf7737c2a0f1d0cbc9c48c5ff2b3fe12"
