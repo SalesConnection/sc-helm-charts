@@ -2,5 +2,8 @@ dependencies:
 - name: reloader
   repository: https://stakater.github.io/stakater-charts
   version: 1.1.0
-digest: sha256:5dd3b2376f13cc6951b87a719589b4648c8bd5a9b0354d1e1c5ad136f3853b53
-generated: "2024-09-25T23:31:45.974998+08:00"
+- name: repeat-job
+  repository: https://salesconnection.github.io/sc-helm-charts
+  version: 0.1.0
+digest: sha256:35c1672e0a83a9207c873246eeecb3c1cccce9120f7e9d811379d1ca3572a5e5
+generated: "2024-09-26T18:28:16.346817+08:00"

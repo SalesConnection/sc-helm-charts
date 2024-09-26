@@ -152,3 +152,8 @@ tolerations: []
 affinity: {}
 
 topologySpreadConstraints: []
+
+repeat-job:
+  fullnameOverride: "repeat-job"
+  image:
+    tag: "a358d34941e84c42d6c8daec839f1ab539e5cd3e"

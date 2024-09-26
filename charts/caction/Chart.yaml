@@ -26,3 +26,6 @@ dependencies:
   - name: reloader
     repository: https://stakater.github.io/stakater-charts
     version: 1.1.0
+  - name: repeat-job
+    repository: https://salesconnection.github.io/sc-helm-charts
+    version: 0.1.0
