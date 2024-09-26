@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "caction.fullname" . }}
+  labels:
+    {{- include "caction.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9253
+      targetPort: 9253
+      protocol: TCP
+      name: php-fpm-prometheus-exporter
+    - port: 9876
+      targetPort: 9876
+      protocol: TCP
+      name: supervisor-prometheus-exporter
+  selector:
+    {{- include "caction.selectorLabels" . | nindent 4 }}
