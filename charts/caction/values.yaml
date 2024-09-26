@@ -162,3 +162,9 @@ noti:
   fullnameOverride: "noti-server"
   image:
     tag: "b0d09189bf7737c2a0f1d0cbc9c48c5ff2b3fe12"
+
+qr-generator:
+  enabled: false
+  fullnameOverride: "qr-generator"
+  image:
+    tag: "5308f4c2af6240c96440a26021f8b209d4ca462c"

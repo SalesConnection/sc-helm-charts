@@ -32,3 +32,6 @@ dependencies:
   - name: noti
     repository: https://salesconnection.github.io/sc-helm-charts
     version: 0.1.0
+  - name: qr-generator
+    repository: https://salesconnection.github.io/sc-helm-charts
+    version: 0.1.0

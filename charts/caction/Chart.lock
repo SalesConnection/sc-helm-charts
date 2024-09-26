@@ -8,5 +8,8 @@ dependencies:
 - name: noti
   repository: https://salesconnection.github.io/sc-helm-charts
   version: 0.1.0
-digest: sha256:b1b271ee2e367fa43f740ff70a9be430ec00b21f04e2a2701bcb95b3c5185af1
-generated: "2024-09-26T23:05:50.948706+08:00"
+- name: qr-generator
+  repository: https://salesconnection.github.io/sc-helm-charts
+  version: 0.1.0
+digest: sha256:588604defae8cc95bece96f8c122301bec60aaa2016fd555490b590f9c013b72
+generated: "2024-09-26T23:46:41.002281+08:00"
