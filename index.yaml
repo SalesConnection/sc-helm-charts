@@ -23,6 +23,17 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/batch-reminder-1.0.0/batch-reminder-1.0.0.tgz
     version: 1.0.0
+  repeat-job:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-09-26T10:26:11.092083586Z"
+    description: A Helm chart for Kubernetes
+    digest: 330bc4ed767a381bacc1725060cbd5d0e757367cec5a30d19ef6ae77d9ded93c
+    name: repeat-job
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/repeat-job-0.1.0/repeat-job-0.1.0.tgz
+    version: 0.1.0
   salesconnection:
   - apiVersion: v2
     appVersion: 0.5.6
@@ -1131,4 +1142,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/salesconnection-0.1.0/salesconnection-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-09T02:17:03.322678845Z"
+generated: "2024-09-26T10:26:11.092294703Z"
