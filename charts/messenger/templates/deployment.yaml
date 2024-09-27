@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "messenger.fullname" . }}
+  labels:
+    {{- include "messenger.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "messenger.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        configmap.reloader.stakater.com/reload: "{{ include "messenger.configMapName" . }},{{ include "messenger.configMapSupervisordName" . }},{{ include "messenger.secretName" . }}"
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "messenger.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "messenger.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- with .Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+            - name: supervisord-config
+              mountPath: "/etc/supervisor/conf.d/supervisor-messenger.conf"
+              subPath: "supervisor-messenger.conf"
+          envFrom:
+            - configMapRef:
+                name: {{ include "messenger.configMapName" . }}
+            - secretRef:
+                name: {{ include "messenger.secretName" . }}
+        - name: supervisor-prometheus-exporter
+          image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/supervisor-prometheus-exporter:latest
+          ports:
+            - name: metrics
+              containerPort: 9876
+              protocol: TCP
+      volumes:
+        {{- with .Values.volumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        - name: supervisord-config
+          configMap:
+            name: {{ include "messenger.configMapSupervisordName" . }}
+            defaultMode: 444
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
