@@ -1196,6 +1196,16 @@ entries:
   srv-change-status:
   - apiVersion: v2
     appVersion: v1.0.0
+    created: "2024-09-30T09:20:15.567998921Z"
+    description: Microservice change status Helm chart for Kubernetes
+    digest: bb749e6c8fddbc780de9d33d1b116659744f18847c23307928dd5e6fa65f4fd3
+    name: srv-change-status
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.2/srv-change-status-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: v1.0.0
     created: "2024-09-30T09:06:10.221464216Z"
     description: Microservice change status Helm chart for Kubernetes
     digest: a0ea56b4970b33f70ea011b7297423e8e099fcee1924ee821a82dbc4304ca5b8
@@ -1214,4 +1224,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-09-30T09:06:10.22165954Z"
+generated: "2024-09-30T09:20:15.568167686Z"
