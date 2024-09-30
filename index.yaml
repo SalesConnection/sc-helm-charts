@@ -1193,4 +1193,15 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/salesconnection-0.1.0/salesconnection-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-27T14:07:05.76421755Z"
+  srv-change-status:
+  - apiVersion: v2
+    appVersion: v1.0.0
+    created: "2024-09-30T08:55:50.583189057Z"
+    description: Microservice change status Helm chart for Kubernetes
+    digest: 0b89f3bc9e6083963c856f74d8435770676671ee398fd113bc9ff2d2ba10a224
+    name: srv-change-status
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
+    version: 1.0.0
+generated: "2024-09-30T08:55:50.583391375Z"
