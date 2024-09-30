@@ -19,11 +19,29 @@ image:
 configMap:
   name: ""
   data: {}
-
-robotsConfigMap:
-  data:
-    robots.txt: |
+  files:
+    # For robots.txt
+    robotsTxt: |
       User-agent: *
+    # For entrypoint.sh
+    entrypointSh: |
+      #!/bin/sh
+      supervisord
+
+
+secret:
+  name: ""
+
+# Queue processors
+queueJob:
+  enabled: false
+  list:
+    - name: "sample"
+      numproc: 1
+      queue_env_key: "ENV_QUEUE"
+      timeout: 300
+    # - name: ""
+    #   command: ""
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -152,6 +170,13 @@ tolerations: []
 affinity: {}
 
 topologySpreadConstraints: []
+
+# CronJob
+cron:
+  # Enable cron job. Default to off
+  enabled: false
+  # Name of the cron job name
+  name: ""
 
 repeat-job:
   fullnameOverride: "repeat-job"

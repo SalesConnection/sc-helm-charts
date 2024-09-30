@@ -10,11 +10,19 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: robots-configmap
+  name: {{ include "caction.fileBasedConfigMapName" . }}
 data:
-{{- with .Values.robotsConfigMap.data }}
-  {{- toYaml . | nindent 2 }}
-{{- else }}
+  {{- with .Values.configMap.files.robotsTxt }}
+  robots.txt: {{- toYaml . | nindent 2 }}
+  {{- else }}
   robots.txt: |
     User-agent: *
-{{- end }}
+  {{- end }}
+  {{- if .Values.queueJob.enabled }}
+  entrypoint.sh: |
+    {{- .Values.configMap.files.entrypointSh | nindent 4 }}
+  supervisor
+  {{- range .Values.queueJob.list }}
+  {{- end }}
+  {{- end }}
+---

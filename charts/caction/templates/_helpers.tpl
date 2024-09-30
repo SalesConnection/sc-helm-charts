@@ -79,8 +79,22 @@ ConfigMap name
 {{- end }}
 
 {{/*
+ConfigMap name for file based config
+*/}}
+{{- define "caction.fileBasedConfigMapName" -}}
+{{- printf "%s-%s" (include "caction.configMapName" .) "file" }}
+{{- end }}
+
+{{/*
 Reloader annotation
 */}}
 {{- define "caction.reloaderAnnotation" -}}
 configmap.reloader.stakater.com/reload: "{{ (printf "%s,%s" (include "caction.configMapName" .) "robots-configmap") }}"
+{{- end }}
+
+{{/*
+Cronjob name
+*/}}
+{{- define "caction.cronJobName" -}}
+{{- default (printf "%s-%s" .Release.Name "cron") .Values.cron.name }}
 {{- end }}

@@ -75,8 +75,8 @@ spec:
               mountPath: /var/run/datadog
             {{- end }}
             - name: robots-volume
-              configMap:
-                name: robots-configmap
+              mountPath: "/var/www/public/robots.txt"
+              subPath: "robots.txt"
           envFrom:
             - configMapRef:
                 name: {{ include "caction.configMapName" . }}
@@ -103,8 +103,9 @@ spec:
             path: /var/run/datadog/
         {{- end }}
         - name: robots-volume
-          mountPath: "/var/www/public/robots.txt"
-          subPath: "robots.txt"
+          configMap:
+            name: {{ include "caction.fileBasedConfigMapName" . }}
+            defaultMode: 444
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -131,3 +132,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+---
