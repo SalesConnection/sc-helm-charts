@@ -26,6 +26,16 @@ entries:
   messenger:
   - apiVersion: v2
     appVersion: v1.2.0
+    created: "2024-10-02T08:53:36.653165958Z"
+    description: Messenger chart that runs on Kubernetes
+    digest: 1121cf6f111c2e7122569a6614099cc50a810d4c19141d9e211d8b06a33cc3f4
+    name: messenger
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/messenger-1.1.0/messenger-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
+    appVersion: v1.2.0
     created: "2024-09-27T14:07:05.764058351Z"
     dependencies:
     - name: reloader
@@ -1224,4 +1234,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-09-30T09:20:15.568167686Z"
+generated: "2024-10-02T08:53:36.653446581Z"
