@@ -64,11 +64,9 @@ spec:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             {{- with .Values.volumeMounts }}
-            {{- toYaml . | nindent 12 }}
+              {{- toYaml . | nindent 12 }}
             {{- end -}}
             {{- if .Values.datadog.enabled }}
             - name: apmsocketpath
@@ -132,4 +130,120 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- if .Values.queueJob.enabled }}
+{{- range .Values.queueJob.list }}
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "caction.fullname" $ }}-{{ .name }}-worker"
+  labels:
+    {{- include "caction.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      {{- include "caction.selectorLabels" $ | nindent 6 }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        {{- include "caction.reloaderAnnotation" $ | nindent 8 }}
+        {{- if $.Values.datadog.enabled }}
+          {{- with $.Values.datadog.annotations }}
+            {{- toYaml . | nindent 8 }}
+          {{- else }}
+            {{- include "caction.datadogAnnotation" $ | nindent 8 }}
+          {{- end }}
+        {{- end }}
+        {{- with $.Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "caction.labels" $ | nindent 8 }}
+        {{- with $.Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "caction.serviceAccountName" $ }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      {{- with $.Values.initContainers }}
+      initContainers: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ $.Chart.Name }}
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          volumeMounts:
+            {{- with $.Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end -}}
+            {{- if $.Values.datadog.enabled }}
+            - name: apmsocketpath
+              mountPath: /var/run/datadog
+            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "caction.configMapName" $ }}
+          {{- if $.Values.datadog.enabled }}
+          env:
+            - name: DD_TRACE_AGENT_URL
+              value: 'unix:///var/run/datadog/apm.socket'
+          {{- end }}
+          resources:
+            {{- toYaml $.Values.resources | nindent 12 }}
+        - name: php-fpm-prometheus-exporter
+          image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/supervisor-prometheus-exporter:latest
+          ports:
+            - name: metrics
+              containerPort: 9876
+              protocol: TCP
+      volumes:
+        {{- with $.Values.volumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if $.Values.datadog.enabled }}
+        - name: apmsocketpatch
+          hostPath:
+            path: /var/run/datadog/
+        {{- end }}
+      {{- with $.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- else }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              {{- include "caction.selectorLabels" $ | nindent 14 }}
+          matchLabelKeys:
+            - pod-template-hash
+      {{- end }}
+      {{- with $.Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
+{{- end }}

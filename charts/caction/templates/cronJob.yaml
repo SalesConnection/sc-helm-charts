@@ -1,0 +1,68 @@
+{{- if .Values.cron.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "caction.cronJobName" . }}
+  labels:
+    {{- include "caction.labels" . | nindent 4 }}
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ include "caction.serviceAccountName" . }}
+          volumes:
+            {{- with .Values.volumes }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.datadog.enabled }}
+            - name: apmsocketpatch
+              hostPath:
+                path: /var/run/datadog/
+            {{- end }}
+            - name: robots-volume
+              configMap:
+                name: robots-configmap
+                defaultMode: 444
+          restartPolicy: Never
+          containers:
+            - name: "{{ .Chart.Name }}"
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  {{- if .Values.datadog.enabled }}
+                  export DD_TRACE_CLI_ENABLED=1
+                  export DD_TRACE_GENERATE_ROOT_SPAN=0
+                  export DD_TRACE_AUTO_FLUSH_ENABLED=1
+                  export DD_SERVICE="{{ .Values.cron.datadog.serviceName | default "cli-cronjob" }}"
+                  {{- end }}
+                  /usr/local/bin/php /var/www/artisan schedule:run > /proc/1/fd/1 2>/proc/1/fd/2
+                  sleep 5
+              volumeMounts:
+                {{- with .Values.volumeMounts }}
+                  {{- toYaml . | nindent 16 }}
+                {{- end -}}
+                {{- if .Values.datadog.enabled }}
+                - name: apmsocketpath
+                  mountPath: /var/run/datadog
+                {{- end }}
+                - name: robots-volume
+                  mountPath: "/var/www/public/robots.txt"
+                  subPath: "robots.txt"
+              envFrom:
+                - configMapRef:
+                    name: {{ include "caction.configMapName" . }}
+              {{- if .Values.datadog.enabled }}
+              env:
+                - name: DD_TRACE_AGENT_URL
+                  value: 'unix:///var/run/datadog/apm.socket'
+              {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}

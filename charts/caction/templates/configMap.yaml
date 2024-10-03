@@ -12,17 +12,34 @@ kind: ConfigMap
 metadata:
   name: {{ include "caction.fileBasedConfigMapName" . }}
 data:
-  {{- with .Values.configMap.files.robotsTxt }}
-  robots.txt: {{- toYaml . | nindent 2 }}
-  {{- else }}
-  robots.txt: |
-    User-agent: *
+  {{- with .Values.configMap.files }}
+  {{- toYaml . | nindent 2 }}
   {{- end }}
   {{- if .Values.queueJob.enabled }}
   entrypoint.sh: |
-    {{- .Values.configMap.files.entrypointSh | nindent 4 }}
-  supervisor
+    #!/bin/sh
+    supervisord
   {{- range .Values.queueJob.list }}
+  {{- .name | nindent 2 }}.conf: |
+    [supervisord]
+    nodaemon=true
+
+    [inet_http_server]
+    port = 127.0.0.1:9001
+
+    [program:{{ .name }}]
+    process_name=%(program_name)s_%(process_num)02d
+    {{- if $.Values.datadog.enabled }}
+    environment=DD_TRACE_CLI_ENABLED="1",DD_TRACE_GENERATE_ROOT_SPAN="0",DD_TRACE_AUTO_FLUSH_ENABLED="1",DD_ENV=%(ENV_DD_ENV)s,DD_SERVICE={{ .name | quote }}
+    {{- end }}
+    command=/usr/local/bin/php /var/www/artisan queue:work {{ if .connection }}{{ .connection }}{{ else }}{{ "sqs" }}{{ end }} {{ if .queue_env_key }}--queue=%(ENV_{{ .queue_env_key }})s{{ else if .sqs_queue_name }}--queue={{ .sqs_queue_name }}{{ end }} {{ if .timeout }}--timeout={{ .timeout }}{{ end }}
+    autostart=true
+    autorestart=true
+    user=root
+    numprocs={{ .numproc | default 1 }}
+    redirect_stderr=true
+    stdout_logfile=/dev/fd/1
+    stdout_logfile_maxbytes=0
   {{- end }}
   {{- end }}
 ---
