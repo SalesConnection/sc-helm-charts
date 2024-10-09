@@ -61,14 +61,14 @@ spec:
                 name: {{ include "caction-website.configMapName" . }}
             - secretRef:
                 name: {{ include "caction-website.secretName" . }}
-      {{- with .Values.volumes }}
       volumes:
         - name: readFile
           configMap:
             name: {{ include "caction-website.fileConfigMapName" . }}
             defaultMode: 444
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- with .Values.volumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
