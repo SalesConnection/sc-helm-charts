@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "caction-website.configMapName" . }}
+  labels:
+    {{- include "caction-website.labels" . | nindent 4 }}
+data:
+  {{- toYaml .Values.configMap.data | nindent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "caction-website.fileConfigMapName" . }}
+  labels:
+    {{- include "caction-website.labels" . | nindent 4 }}
+data:
+  {{- toYaml .Values.configMap.files | nindent 2 }}

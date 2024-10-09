@@ -1,0 +1,15 @@
+{{- range .Values.pvc }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "caction-website.labels" $ | nindent 4 }}
+spec: 
+  accessModes: {{- toYaml .accessModes | nindent 4 }}
+  storageClassName: {{ .storageClassName }}
+  resources: 
+    requests:
+      storage: {{ .storage }}
+---
+{{- end }}
