@@ -26,6 +26,16 @@ entries:
   caction-website:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-10-09T13:06:03.479213954Z"
+    description: A Helm chart for Kubernetes
+    digest: 7726147c59279ffb4f483000fbbc29fabff0d42d820610427c05780be23c5aab
+    name: caction-website
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/caction-website-1.0.2/caction-website-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-10-09T13:03:20.284376007Z"
     description: A Helm chart for Kubernetes
     digest: a16ed9746b67663f32c2a443cf2a17c092d055682dfd085dbf06098cca4c0f9e
@@ -1265,4 +1275,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-09T13:03:20.284668068Z"
+generated: "2024-10-09T13:06:03.479393029Z"
