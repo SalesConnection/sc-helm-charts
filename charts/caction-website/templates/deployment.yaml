@@ -49,13 +49,13 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
             - name: readFile
               mountPath: {{ include "caction-website.robotsTxtPath" . }}
               subPath: "robots.txt"
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- with .Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "caction-website.configMapName" . }}
