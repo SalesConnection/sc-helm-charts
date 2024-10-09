@@ -14,7 +14,7 @@ spec:
   template:
     metadata:
       annotations:
-        configmap.reloader.stakater.com/reload: "{{ include "caction-website.configMapName" . }},{{ include "caction-website.secretName" . }}"
+        configmap.reloader.stakater.com/reload: "{{ include "caction-website.configMapName" . }},{{ include "caction-website.fileConfigMapName" . }},{{ include "caction-website.secretName" . }}"
         {{- with .Values.podAnnotations }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -51,6 +51,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: readFile
+              mountPath: {{ include "caction-website.robotsTxtPath" . }}
+              subPath: "robots.txt"
             {{- toYaml . | nindent 12 }}
           {{- end }}
           envFrom:
@@ -60,6 +63,10 @@ spec:
                 name: {{ include "caction-website.secretName" . }}
       {{- with .Values.volumes }}
       volumes:
+        - name: readFile
+          configMap:
+            name: {{ include "caction-website.fileConfigMapName" . }}
+            defaultMode: 444
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
@@ -73,4 +80,18 @@ spec:
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- else }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              {{- include "caction-website.selectorLabels" . | nindent 14 }}
+          matchLabelKeys:
+            - pod-template-hash
       {{- end }}

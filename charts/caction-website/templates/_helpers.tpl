@@ -69,8 +69,22 @@ ConfigMap name
 {{- end }}
 
 {{/*
+ConfigMap files
+*/}}
+{{- define "caction-website.fileConfigMapName" -}}
+{{- printf "%s-%s" .Release.Name "file-config" }}
+{{- end }}
+
+{{/*
 Secret name
 */}}
 {{- define "caction-website.secretName" -}}
 {{- default (printf "%s-%s" .Release.Name "secret") .Values.secret.name }}
+{{- end }}
+
+{{/*
+robots.txt full path
+*/}}
+{{- define "caction-website.robotsTxtPath" -}}
+{{- printf "%s/public/robots.txt" .Values.configMap.data.WWW_ROOT }}
 {{- end }}
