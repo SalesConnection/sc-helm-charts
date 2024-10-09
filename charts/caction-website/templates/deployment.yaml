@@ -50,7 +50,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: readFile
+            - name: read-only-file
               mountPath: {{ include "caction-website.robotsTxtPath" . }}
               subPath: "robots.txt"
             {{- with .Values.volumeMounts }}
@@ -62,7 +62,7 @@ spec:
             - secretRef:
                 name: {{ include "caction-website.secretName" . }}
       volumes:
-        - name: readFile
+        - name: read-only-file
           configMap:
             name: {{ include "caction-website.fileConfigMapName" . }}
             defaultMode: 444
