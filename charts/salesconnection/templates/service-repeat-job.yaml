@@ -1,4 +1,4 @@
-{{- if .Values.repeatJob.service.enabled }}
+{{- if and .Values.repeatJob.enabled .Values.repeatJob.service.enabled }}
 apiVersion: v1
 kind: Service
 metadata:

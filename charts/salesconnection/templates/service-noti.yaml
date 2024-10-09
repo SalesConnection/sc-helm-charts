@@ -1,4 +1,4 @@
-{{- if .Values.notiServer.service.enabled }}
+{{- if and .Values.notiServer.enabled .Values.notiServer.service.enabled }}
 apiVersion: v1
 kind: Service
 metadata:

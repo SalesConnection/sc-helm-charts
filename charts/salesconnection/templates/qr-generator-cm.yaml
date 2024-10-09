@@ -1,3 +1,4 @@
+{{- if .Values.qrGenerator.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,3 +7,4 @@ metadata:
     name: qr-generator-cm
 data:
   {{- toYaml .Values.qrGenerator.configMap | nindent 2 }}
+{{- end }}

@@ -1,4 +1,4 @@
-{{- if .Values.scMessengerStaging.ingress.enabled -}}
+{{- if and .Values.scMessengerStaging.enabled .Values.scMessengerStaging.ingress.enabled -}}
 {{- if and .Values.scMessengerStaging.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.scMessengerStaging.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.scMessengerStaging.ingress.annotations "kubernetes.io/ingress.class" .Values.scMessengerStaging.ingress.className}}
