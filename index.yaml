@@ -23,6 +23,17 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/batch-reminder-1.0.0/batch-reminder-1.0.0.tgz
     version: 1.0.0
+  caction-website:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-09T03:52:05.266780032Z"
+    description: A Helm chart for Kubernetes
+    digest: 54b3dd41de780546df47518a1b6a88a339c508dba26ecdb074ce0d5c3d5e96e3
+    name: caction-website
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/caction-website-0.1.0/caction-website-0.1.0.tgz
+    version: 0.1.0
   messenger:
   - apiVersion: v2
     appVersion: v1.2.0
@@ -1234,4 +1245,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-02T08:53:36.653446581Z"
+generated: "2024-10-09T03:52:05.266976839Z"
