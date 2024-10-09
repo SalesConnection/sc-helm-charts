@@ -149,6 +149,17 @@ entries:
   salesconnection:
   - apiVersion: v2
     appVersion: v8.2.7
+    created: "2024-10-09T13:46:03.0323711Z"
+    description: A Helm chart for Kubernetes
+    digest: ab1fee93613659a83593c74c15e312012d33a297b339d6a6f01578725f052711
+    icon: https://cdn.salesconnection.my/pages/image/sales-conn-logo-fullcolor+(1).webp
+    name: salesconnection
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/salesconnection-0.14.2/salesconnection-0.14.2.tgz
+    version: 0.14.2
+  - apiVersion: v2
+    appVersion: v8.2.7
     created: "2024-10-09T13:36:15.904937193Z"
     description: A Helm chart for Kubernetes
     digest: 14cebc4030b3327fe92f37bd85f991e9b62d354d01fa737b6349c8c5521b73e1
@@ -1307,4 +1318,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-09T13:36:15.905267802Z"
+generated: "2024-10-09T13:46:03.032748588Z"
