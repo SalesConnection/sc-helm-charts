@@ -21,9 +21,9 @@ spec:
               hostPath:
                 path: /var/run/datadog/
             {{- end }}
-            - name: robots-volume
+            - name: file-volume
               configMap:
-                name: robots-configmap
+                name: {{ include "caction.fileBasedConfigMapName" . }}
                 defaultMode: 444
           restartPolicy: Never
           containers:
@@ -50,7 +50,7 @@ spec:
                 - name: apmsocketpath
                   mountPath: /var/run/datadog
                 {{- end }}
-                - name: robots-volume
+                - name: file-volume
                   mountPath: "/var/www/public/robots.txt"
                   subPath: "robots.txt"
               envFrom:
