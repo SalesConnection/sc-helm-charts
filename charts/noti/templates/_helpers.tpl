@@ -48,7 +48,6 @@ Selector labels
 {{- define "noti.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "noti.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app: {{ include "noti.fullname" . }}
 {{- end }}
 
 {{/*

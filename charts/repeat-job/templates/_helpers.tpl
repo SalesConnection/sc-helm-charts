@@ -48,7 +48,6 @@ Selector labels
 {{- define "repeat-job.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "repeat-job.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app: {{ include "repeat-job.fullname" . }}
 {{- end }}
 
 {{/*

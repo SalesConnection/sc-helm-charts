@@ -48,7 +48,6 @@ Selector labels
 {{- define "messenger.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "messenger.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app: sc-messenger
 {{- end }}
 
 {{/*
