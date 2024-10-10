@@ -17,7 +17,7 @@ spec:
               {{- toYaml . | nindent 12 }}
             {{- end }}
             {{- if .Values.datadog.enabled }}
-            - name: apmsocketpatch
+            - name: apmsocketpath
               hostPath:
                 path: /var/run/datadog/
             {{- end }}
