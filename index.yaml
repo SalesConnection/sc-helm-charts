@@ -23,6 +23,27 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/batch-reminder-1.0.0/batch-reminder-1.0.0.tgz
     version: 1.0.0
+  caction:
+  - apiVersion: v2
+    appVersion: v8.2.7
+    created: "2024-10-10T02:56:05.544272543Z"
+    dependencies:
+    - name: repeat-job
+      repository: https://salesconnection.github.io/sc-helm-charts
+      version: 0.1.0
+    - name: noti
+      repository: https://salesconnection.github.io/sc-helm-charts
+      version: 0.1.0
+    - name: qr-generator
+      repository: https://salesconnection.github.io/sc-helm-charts
+      version: 0.1.0
+    description: Caction Helm chart for Kubernetes
+    digest: 9515ecf91b9d8da68b62c8c85453ca02c376f4d1a9b23813a04a119faac67329
+    name: caction
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/caction-1.0.0/caction-1.0.0.tgz
+    version: 1.0.0
   caction-website:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1318,4 +1339,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-09T13:46:03.032748588Z"
+generated: "2024-10-10T02:56:05.544736937Z"
