@@ -223,7 +223,7 @@ spec:
         {{- end }}
         - name: file-volume
           configMap:
-            name: {{ include "caction.fileBasedConfigMapName" . }}
+            name: {{ include "caction.fileBasedConfigMapName" $ }}
             defaultMode: 444
       {{- with $.Values.nodeSelector }}
       nodeSelector:
