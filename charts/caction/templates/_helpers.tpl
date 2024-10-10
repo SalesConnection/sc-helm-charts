@@ -79,6 +79,13 @@ ConfigMap name
 {{- end }}
 
 {{/*
+Secret name
+*/}}
+{{- define "caction.secretName" -}}
+{{- default (printf "%s-%s" .Release.Name "secret") .Values.secret.name }}
+{{- end }}
+
+{{/*
 ConfigMap name for file based config
 */}}
 {{- define "caction.fileBasedConfigMapName" -}}
