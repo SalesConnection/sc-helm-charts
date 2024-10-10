@@ -221,6 +221,10 @@ spec:
           hostPath:
             path: /var/run/datadog/
         {{- end }}
+        - name: file-volume
+          configMap:
+            name: {{ include "caction.fileBasedConfigMapName" . }}
+            defaultMode: 444
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
