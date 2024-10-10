@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "caction.labels" . | nindent 4 }}
 data:
+  DD_ENV: {{ .Values.configMap.data.APP_ENV }}
   {{- toYaml .Values.configMap.data | nindent 2 }}
 ---
 apiVersion: v1

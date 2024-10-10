@@ -18,7 +18,8 @@ image:
 
 configMap:
   name: ""
-  data: {}
+  data:
+    APP_ENV: live
   files:
     # For robots.txt
     robots.txt: |
