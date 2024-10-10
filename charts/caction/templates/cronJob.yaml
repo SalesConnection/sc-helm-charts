@@ -56,6 +56,8 @@ spec:
               envFrom:
                 - configMapRef:
                     name: {{ include "caction.configMapName" . }}
+                - secretRef:
+                    name: {{ include "caction.secretName" . }}
               {{- if .Values.datadog.enabled }}
               env:
                 - name: DD_TRACE_AGENT_URL

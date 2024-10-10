@@ -196,6 +196,12 @@ spec:
             - name: apmsocketpath
               mountPath: /var/run/datadog
             {{- end }}
+            - name: file-volume
+              mountPath: /etc/supervisor/conf.d/{{ .name }}.conf
+              subPath: {{ .name }}.conf
+            - name: file-volume
+              mountPath: /var/post_deploy.sh
+              subPath: entrypoint.sh
           envFrom:
             - configMapRef:
                 name: {{ include "caction.configMapName" $ }}
