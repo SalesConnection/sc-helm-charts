@@ -1,12 +1,12 @@
 dependencies:
 - name: repeat-job
   repository: https://salesconnection.github.io/sc-helm-charts
-  version: 0.1.0
+  version: 0.1.1
 - name: noti
   repository: https://salesconnection.github.io/sc-helm-charts
-  version: 0.1.0
+  version: 0.1.1
 - name: qr-generator
   repository: https://salesconnection.github.io/sc-helm-charts
-  version: 0.1.0
-digest: sha256:af5fb0f54edf5235ef20400c8bd988b5fcc98eec855485c0ae34d932b3bf6558
-generated: "2024-10-02T17:19:47.94443+08:00"
+  version: 0.1.1
+digest: sha256:c503e983b2be11267971c33f2ce4f5e82cf3800a4cb65f096f059e1343b94066
+generated: "2024-10-10T12:07:41.906212+08:00"
