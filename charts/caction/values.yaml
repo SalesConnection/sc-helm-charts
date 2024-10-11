@@ -32,6 +32,7 @@ secret:
 # Queue processors
 queueJob:
   enabled: false
+  nodeSelector: {}
   list: []
     # - name: "sample"
     #   numproc: 1
