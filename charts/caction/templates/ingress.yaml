@@ -34,10 +34,14 @@ spec:
             pathType: {{ . }}
             {{- end }}
             backend:
+              {{- with .service }}
+              service: {{- toYaml . | nindent 16 }}
+              {{- else }}
               service:
                 name: {{ include "caction.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
+              {{- end }}
           {{- end }}
     {{- end }}
 {{- end }}
