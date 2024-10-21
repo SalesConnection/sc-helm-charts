@@ -26,6 +26,26 @@ entries:
   caction:
   - apiVersion: v2
     appVersion: v9.1.4
+    created: "2024-10-21T08:56:23.184332827Z"
+    dependencies:
+    - name: repeat-job
+      repository: https://salesconnection.github.io/sc-helm-charts
+      version: 0.1.2
+    - name: noti
+      repository: https://salesconnection.github.io/sc-helm-charts
+      version: 0.1.2
+    - name: qr-generator
+      repository: https://salesconnection.github.io/sc-helm-charts
+      version: 0.1.1
+    description: Caction Helm chart for Kubernetes
+    digest: 72659d1281231b0c0fee4686a55a2b18c1cd5f5b3c9230e3c9a17d482fbf4f4f
+    name: caction
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/caction-1.1.4/caction-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v2
+    appVersion: v9.1.4
     created: "2024-10-21T08:28:46.731076425Z"
     dependencies:
     - name: repeat-job
@@ -1639,4 +1659,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-21T08:28:46.731397437Z"
+generated: "2024-10-21T08:56:23.184580951Z"
