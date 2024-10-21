@@ -180,12 +180,12 @@ cron:
 repeat-job:
   fullnameOverride: "repeat-job"
   image:
-    tag: "a358d34941e84c42d6c8daec839f1ab539e5cd3e"
+    tag: "fbbd22d924047d271f9ecbe7689af2090bf53676"
 
 noti:
   fullnameOverride: "noti-server"
   image:
-    tag: "b0d09189bf7737c2a0f1d0cbc9c48c5ff2b3fe12"
+    tag: "6d02814e6d1335e984ad1f2547c5caf550d24b03"
 
 qr-generator:
   enabled: false
