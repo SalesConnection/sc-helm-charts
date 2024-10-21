@@ -367,6 +367,16 @@ entries:
   noti:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-10-21T07:35:58.21153208Z"
+    description: Noti Helm chart for Kubernetes
+    digest: 9f076e1e04c1c2e10ef84318f7f5ab16edb7f806fe6cbc36a9305d101f439aa3
+    name: noti
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/noti-0.1.2/noti-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-10-10T04:06:21.400822232Z"
     description: Noti Helm chart for Kubernetes
     digest: 7961ce6fe41159b603142d74c94f2d753bce2b3d3a8566e16589203765e35899
@@ -407,6 +417,16 @@ entries:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/qr-generator-0.1.0/qr-generator-0.1.0.tgz
     version: 0.1.0
   repeat-job:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-21T07:35:58.347307941Z"
+    description: A Helm chart for Kubernetes
+    digest: aa9384472159eef65153ff5edd368dce8762cf1c16b4bd417fb70a2703203f7a
+    name: repeat-job
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/repeat-job-0.1.2/repeat-job-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2024-10-10T04:06:21.596478716Z"
@@ -1599,4 +1619,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-14T02:03:53.138717131Z"
+generated: "2024-10-21T07:35:58.347562539Z"
