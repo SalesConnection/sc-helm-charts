@@ -404,6 +404,17 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/messenger-1.0.2/messenger-1.0.2.tgz
     version: 1.0.2
+  microservice:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-23T06:47:47.108612822Z"
+    description: A Microservice Helm chart for Kubernetes
+    digest: a309c175e05135c70d8b7418a2da8e80d20b8ee0fb1b88675700a262602311c4
+    name: microservice
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/microservice-1.0.0/microservice-1.0.0.tgz
+    version: 1.0.0
   noti:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -1659,4 +1670,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-21T08:56:23.184580951Z"
+generated: "2024-10-23T06:47:47.108854772Z"
