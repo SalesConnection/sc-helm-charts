@@ -1,6 +1,30 @@
-version: v1.0.1
+fullnameOverride: ""
+nameOverride: ""
+
+# override app version
+version: ""
+
+# num of replicas
 replicas: 1
+
+# config
 env:
   database_url: ""
+
+# service account
+serviceAccount:
+  create: false
+  name: ""
+
+# configure ingress
 ingress:
-  endpoint: ""
+  hosts: []
+  className: ""
+  nginx:
+    secretName: "batch-reminder-tls"
+    clusterIssuer: ""
+  alb:
+    groupName: ""
+    certificateArn: ""
+    sslPolicy: "ELBSecurityPolicy-TLS13-1-0-2021-06"
+  extraAnnotations: {}

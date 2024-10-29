@@ -1,27 +1,48 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: br-ingress
+  name: {{ include "batch-reminder.fullname" . }}
+  labels:
+    {{- include "batch-reminder.labels" . | nindent 4 }}
   annotations:
+    {{- if eq .Values.ingress.className "alb" }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/group.name: {{ .Values.ingress.alb.groupName }}
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.alb.certificateArn }}
+    alb.ingress.kubernetes.io/ssl-policy: {{ .Values.ingress.alb.sslPolicy }}
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    {{- else }}
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-    cert-manager.io/cluster-issuer: cert-manager-letsencrypt-production-route53
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.nginx.clusterIssuer }}
     acme.cert-manager.io/http01-edit-in-place: "true"
+    {{- end }}
+    {{- range $key, $value := .Values.ingress.extraAnnotations }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- if eq .Values.ingress.className "nginx" }}
   tls:
-  - hosts:
-    - {{ .Values.ingress.endpoint }}
-    secretName: batch-reminder-tls
+    - hosts:
+      {{- range .Values.ingress.hosts }}
+      - {{ . }}
+      {{- end }}
+      secretName: {{ .Values.ingress.nginx.secretName }}
+  {{- end }}
   rules:
-  - host: {{ .Values.ingress.endpoint }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: br-service
-            port:
-              name: http
+    {{- range .Values.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "batch-reminder.fullname" $ }}
+              port:
+                name: http
+    {{- end }}

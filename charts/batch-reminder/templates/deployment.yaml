@@ -2,23 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: br-controller
+  labels:
+    {{- include "batch-reminder.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: br-controller
-  replicas: {{ .Values.replicas }}
+      {{- include "batch-reminder.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: br-controller
+        {{- include "batch-reminder.labels" . | nindent 8 }}
     spec:
       containers:
-      - name: controller
-        image: 672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/batch-reminder-ecr:{{ .Values.version }}
+      - name: {{ .Chart.Name }}
+        image: "672944514151.dkr.ecr.ap-southeast-1.amazonaws.com/batch-reminder-ecr:{{ .Values.version | default .Chart.AppVersion }}"
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 3000
         envFrom:
         - secretRef:
-            name: br-secret
+            name: {{ include "batch-reminder.secretName" . }}

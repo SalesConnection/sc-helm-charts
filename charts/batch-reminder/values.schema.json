@@ -1,0 +1,69 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "required": [
+        "ingress"
+    ],
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "replicas": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "ingress": {
+            "type": "object",
+            "required": [
+                "className",
+                "hosts"
+            ],
+            "properties": {
+                "className": {
+                    "type": "string",
+                    "enum": ["nginx", "alb"]
+                },
+                "hosts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "nginx": {
+                    "type": "object",
+                    "required": [
+                        "secretName",
+                        "clusterIssuer"
+                    ],
+                    "properties": {
+                        "secretName": {
+                            "type": "string"
+                        },
+                        "clusterIssuer": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "alb": {
+                    "type": "object",
+                    "required": [
+                        "groupName",
+                        "certificateArn"
+                    ],
+                    "properties": {
+                        "groupName": {
+                            "type": "string"
+                        },
+                        "certificateArn": {
+                            "type": "string"
+                        },
+                        "sslPolicy": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
