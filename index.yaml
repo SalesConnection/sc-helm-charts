@@ -2,6 +2,17 @@ apiVersion: v1
 entries:
   batch-reminder:
   - apiVersion: v2
+    appVersion: v1.0.3
+    created: "2024-10-29T07:57:35.626250186Z"
+    description: A BR Helm chart for Kubernetes
+    digest: 04c0816e72e589bef5b5d850799106b0fe36cd3d6575f136da840e2fd20c3346
+    icon: https://cdn.salesconnection.my/pages/image/sales-conn-logo-fullcolor+(1).webp
+    name: batch-reminder
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/batch-reminder-1.1.0/batch-reminder-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: 1.0.1
     created: "2024-09-09T02:17:03.322383524Z"
     description: A Helm chart for Kubernetes
@@ -1670,4 +1681,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-10-23T06:47:47.108854772Z"
+generated: "2024-10-29T07:57:35.626560127Z"
