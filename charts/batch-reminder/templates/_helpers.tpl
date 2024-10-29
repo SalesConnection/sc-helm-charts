@@ -51,17 +51,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "batch-reminder.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "batch-reminder.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
 ConfigMap name
 */}}
 {{- define "batch-reminder.configMapName" -}}

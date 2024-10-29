@@ -11,11 +11,6 @@ replicas: 1
 env:
   database_url: ""
 
-# service account
-serviceAccount:
-  create: false
-  name: ""
-
 # configure ingress
 ingress:
   hosts: []
