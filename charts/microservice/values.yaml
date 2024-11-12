@@ -129,3 +129,23 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Persistent volume
+persistence:
+  # Enable persistent volume
+  enabled: false
+  # Name of an existing `PersistentVolumeClaim`
+  existingClaim: ""
+  # Mount path
+  mountPath: ""
+  # Persistent volume storage class
+  storageClass: ""
+  # Persistent volume claim annotation
+  annotations: {}
+  # Persistent volume access modes
+  accessModes:
+    - ReadWriteOnce
+  # Persistent volume name
+  volumeName: ""
+  # Persistent volume size
+  size: 8Gi

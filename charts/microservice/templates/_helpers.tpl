@@ -74,3 +74,23 @@ Secret name
 {{- define "microservice.secretName" -}}
 {{- default (printf "%s-%s" .Release.Name "secret") .Values.secret.name }}
 {{- end }}
+
+{{/*
+PVC Name
+*/}}
+{{- define "microservice.pvcName" -}}
+{{- if .Values.persistence.existingClaim }}
+{{- .Values.persistence.existingClaim }}
+{{- else }}
+{{- if .Values.persistence.enabled }}
+{{- include "microservice.fullname" . }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+PV Volume Name
+*/}}
+{{- define "microservice.pvVolName" -}}
+{{- printf "%s-%s" .Release.Name "volume" }}
+{{- end }}
