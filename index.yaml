@@ -429,6 +429,16 @@ entries:
   microservice:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-12-09T02:04:58.620085454Z"
+    description: A Microservice Helm chart for Kubernetes
+    digest: 48e474ed6dc8febfe07be8210f06ce32393fb898c0ac8f9485034ad066668f20
+    name: microservice
+    type: application
+    urls:
+    - https://github.com/SalesConnection/sc-helm-charts/releases/download/microservice-1.2.0/microservice-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-11-12T03:15:59.740048199Z"
     description: A Microservice Helm chart for Kubernetes
     digest: 2594d2a9b39ed1ed75c94f94b3b3d160d59a4dc2b24efbc14c83a222fd10ea73
@@ -1702,4 +1712,4 @@ entries:
     urls:
     - https://github.com/SalesConnection/sc-helm-charts/releases/download/srv-change-status-1.0.0/srv-change-status-1.0.0.tgz
     version: 1.0.0
-generated: "2024-11-12T03:15:59.740441501Z"
+generated: "2024-12-09T02:04:58.620760622Z"
